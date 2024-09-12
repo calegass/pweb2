@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Vacinas</h1>
+<table>
+    <tr th:each="vacina : ${vacinas}">
+        <td th:text="${vacina.codigo}"></td>
+        <td th:text="${vacina.nome}"></td>
+        <td th:text="${vacina.descricao}"></td>
+    </tr>
+</table>
+</body>
+</html>

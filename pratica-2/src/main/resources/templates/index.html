@@ -1,0 +1,14 @@
+<br />
+<form action="#" th:action="@{/objetoqualquer}" method="post">
+    <label for="valor1">Valor1:</label>
+    <input type="number" name="valor1" id="valor1" placeholder="Digite um número" /><br />
+    <label for="valor2">Valor2:</label>
+    <input type="text" name="valor2" id="valor2" placeholder="Digite um texto" /><br />
+    <input type="checkbox" name="valor3" id="valor3" />
+    <label for="valor3">Valor3</label><br /><br />
+    <input type="submit" value="Enviar" />
+    <hr>
+    <a th:href="@{/produto/novo}">Cadastrar novo Produto</a>
+    <hr>
+    <a th:href="@{/fichas/inserir}">Cadastrar uma nova Ficha</a>
+</form>
