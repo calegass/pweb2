@@ -1,17 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"/>
+    <title>Vacinas</title>
 </head>
 <body>
-<h1>Vacinas</h1>
-<table>
-    <tr th:each="vacina : ${vacinas}">
-        <td th:text="${vacina.codigo}"></td>
-        <td th:text="${vacina.nome}"></td>
-        <td th:text="${vacina.descricao}"></td>
-    </tr>
-</table>
+<!-- conteudo principal -->
+<main layout:fragment="conteudo" class="flex flex-col items-center justify-center w-full px-4 py-8">
+    <div class="w-full max-w-4xl overflow-x-auto">
+        <table class="min-w-full table-auto bg-white shadow-md rounded-lg overflow-hidden">
+            <thead class="bg-gray-200">
+            <tr>
+                <th class="px-4 py-2 text-left font-medium text-gray-700">Código</th>
+                <th class="px-4 py-2 text-left font-medium text-gray-700">Nome</th>
+                <th class="px-4 py-2 text-left font-medium text-gray-700">Descrição</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="vacina : ${vacinas}" class="odd:bg-gray-100 even:bg-white">
+                <td class="border px-4 py-2 text-gray-800" th:text="${vacina.codigo}"></td>
+                <td class="border px-4 py-2 text-gray-800" th:text="${vacina.nome}"></td>
+                <td class="border px-4 py-2 text-gray-800" th:text="${vacina.descricao}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+<!-- !conteudo principal -->
+
+<!-- Nao usamos
+<th:block layout:fragment="scripts">
+    <script src="../static/js/index.js" th:src="@{/js/index.js}"></script>
+</th:block> -->
 </body>
 </html>

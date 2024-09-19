@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}"
+      xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"/>
+    <title>Vacinas</title>
+</head>
+<body>
+<!-- conteudo principal -->
+<main layout:fragment="conteudo" class="flex flex-col items-center justify-center w-full px-4 py-8">
+    <div class="w-full max-w-4xl overflow-x-auto">
+        <form th:action="@{/vacinas/nova}" th:object="${vacina}" method="post">
+            <div class="flex flex-col">
+                <label for="nome" class="text-gray-700">Nome</label>
+                <input type="text" th:field="*{nome}" name="nome"
+                       class="border border-gray-300 rounded-lg px-4 py-2 mt-2"/>
+            </div>
+            <div class="flex flex-col mt-5">
+                <label for="descricao" class="text-gray-700">Descrição</label>
+                <textarea th:field="*{descricao}" name="descricao"
+                          class="border border-gray-300 rounded-lg px-4 py-2 mt-2"></textarea>
+            </div>
+            <div class="flex mt-4">
+                <button type="submit"
+                        class=" mt-5 py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none">
+                    Salvar
+                </button>
+            </div>
+        </form>
+    </div>
+</main>
+<!-- !conteudo principal -->
+
+<!-- Nao usamos
+<th:block layout:fragment="scripts">
+    <script src="../static/js/index.js" th:src="@{/js/index.js}"></script>
+</th:block> -->
+</body>
+</html>
