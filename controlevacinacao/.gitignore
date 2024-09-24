@@ -1,5 +1,6 @@
 node_modules/
 logs/
+src/main/resources/static/css
 
 target/
 !.mvn/wrapper/maven-wrapper.jar
