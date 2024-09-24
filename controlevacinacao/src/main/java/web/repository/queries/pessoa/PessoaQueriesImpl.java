@@ -1,3 +1,4 @@
+/*
 package web.repository.queries.pessoa;
 
 import jakarta.persistence.EntityManager;
@@ -27,3 +28,4 @@ public class PessoaQueriesImpl implements PessoaQueries {
     }
 
 }
+*/

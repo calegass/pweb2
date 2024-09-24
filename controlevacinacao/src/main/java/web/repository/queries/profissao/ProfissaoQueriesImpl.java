@@ -1,3 +1,4 @@
+/*
 package web.repository.queries.profissao;
 
 import jakarta.persistence.EntityManager;
@@ -45,3 +46,4 @@ public class ProfissaoQueriesImpl implements ProfissaoQueries {
     }
 
 }
+*/

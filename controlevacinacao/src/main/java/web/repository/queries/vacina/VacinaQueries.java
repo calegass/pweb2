@@ -1,12 +1,12 @@
 package web.repository.queries.vacina;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import web.controlevacinacao.filter.VacinaFilter;
-import web.controlevacinacao.model.Vacina;
+import web.filter.VacinaFilter;
+import web.model.Vacina;
+
+import java.util.List;
 
 public interface VacinaQueries {
 
-    Page<Vacina> pesquisar(VacinaFilter filtro, Pageable pageable);
+    List<Vacina> pesquisar(VacinaFilter filtro);
 
 }

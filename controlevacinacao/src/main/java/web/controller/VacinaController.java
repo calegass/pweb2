@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import web.filter.VacinaFilter;
 import web.model.Vacina;
 import web.repository.VacinaRepository;
 
@@ -50,5 +51,19 @@ public class VacinaController {
     @GetMapping("/sucesso")
     public String sucessoCadastro() {
         return "vacinas/sucesso";
+    }
+
+    @GetMapping("/pesquisar")
+    public String pesquisar(Model model) {
+        model.addAttribute("vacinaFilter", new VacinaFilter());
+        return "vacinas/pesquisar";
+    }
+
+    @PostMapping("/pesquisar")
+    public String pesquisar(VacinaFilter filter, Model model) {
+        List<Vacina> vacinas = repository.pesquisar(filter);
+        model.addAttribute("vacinas", vacinas);
+
+        return "vacinas/vacinas";
     }
 }

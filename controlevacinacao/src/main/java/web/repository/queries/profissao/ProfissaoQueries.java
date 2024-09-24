@@ -1,3 +1,4 @@
+/*
 package web.repository.queries.profissao;
 
 import web.controlevacinacao.filter.ProfissaoFilter;
@@ -10,3 +11,4 @@ public interface ProfissaoQueries {
     List<Profissao> pesquisar(ProfissaoFilter filtro);
 
 }
+*/

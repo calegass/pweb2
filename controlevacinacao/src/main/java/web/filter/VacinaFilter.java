@@ -1,6 +1,7 @@
 package web.filter;
 
 public class VacinaFilter {
+
     private Long codigo;
     private String nome;
     private String descricao;
@@ -27,10 +28,5 @@ public class VacinaFilter {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
-    }
-
-    @Override
-    public String toString() {
-        return "codigo: " + codigo + "\nnome: " + nome + "\ndescricao: " + descricao;
     }
 }
