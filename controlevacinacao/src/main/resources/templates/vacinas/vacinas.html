@@ -9,7 +9,8 @@
 <body>
 <!-- conteudo principal -->
 <main layout:fragment="conteudo" class="flex flex-col items-center justify-center w-full px-4 py-8">
-    <div class="w-full max-w-4xl overflow-x-auto">
+    <h1 th:if="${#lists.isEmpty(vacinas)}">Não foram encontradas </h1>
+    <div th:if="${not #lists.isEmpty(vacinas)}" class="w-full max-w-4xl overflow-x-auto">
         <table class="min-w-full table-auto bg-white shadow-md rounded-lg overflow-hidden">
             <thead class="bg-gray-200">
             <tr>
