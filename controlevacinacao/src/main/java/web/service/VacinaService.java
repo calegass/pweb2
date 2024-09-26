@@ -23,4 +23,9 @@ public class VacinaService {
     public void alterar(Vacina vacina) {
         vacinaRepository.save(vacina);
     }
+
+    @Transactional
+    public void remover(Vacina vacina) {
+        vacinaRepository.delete(vacina);
+    }
 }

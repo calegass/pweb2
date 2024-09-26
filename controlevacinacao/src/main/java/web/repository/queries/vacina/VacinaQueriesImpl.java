@@ -7,9 +7,15 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 import web.filter.VacinaFilter;
 import web.model.Vacina;
+import web.repository.pagination.PaginacaoUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,16 +25,18 @@ public class VacinaQueriesImpl implements VacinaQueries {
     @PersistenceContext
     private EntityManager em;
 
-    @Override
-    public List<Vacina> pesquisar(VacinaFilter filtro) {
+    private final Logger logger = LoggerFactory.getLogger(VacinaQueriesImpl.class);
 
+    @Override
+    public Page<Vacina> pesquisar(VacinaFilter filtro, Pageable pageable) {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Vacina> criteriaQuery = builder.createQuery(Vacina.class);
         Root<Vacina> v = criteriaQuery.from(Vacina.class);
         TypedQuery<Vacina> typedQuery;
         List<Predicate> predicateList = new ArrayList<>();
+        List<Predicate> predicateListTotal = new ArrayList<>();
         Predicate[] predArray;
-
+        Predicate[] predArrayTotal;
         if (filtro.getCodigo() != null) {
             predicateList.add(builder.equal(v.<Long>get("codigo"), filtro.getCodigo()));
         }
@@ -40,17 +48,36 @@ public class VacinaQueriesImpl implements VacinaQueries {
             predicateList.add(builder.like(builder.lower(v.<String>get("descricao")),
                     "%" + filtro.getDescricao().toLowerCase() + "%"));
         }
-
         predArray = new Predicate[predicateList.size()];
         predicateList.toArray(predArray);
-
-        criteriaQuery.select(v).where(predArray).distinct(true);
+        criteriaQuery.select(v).where(predArray);
+        PaginacaoUtil.prepararOrdem(v, criteriaQuery, builder, pageable);
         typedQuery = em.createQuery(criteriaQuery);
+        PaginacaoUtil.prepararIntervalo(typedQuery, pageable);
         typedQuery.setHint("hibernate.query.passDistinctThrough", false);
-
         List<Vacina> vacinas = typedQuery.getResultList();
-
-        return vacinas;
+        logger.info("Calculando o total de registros que o filtro retornará.");
+        CriteriaQuery<Long> criteriaQueryTotal = builder.createQuery(Long.class);
+        Root<Vacina> vTotal = criteriaQueryTotal.from(Vacina.class);
+        criteriaQueryTotal.select(builder.count(vTotal));
+        if (filtro.getCodigo() != null) {
+            predicateListTotal.add(builder.equal(vTotal.<Long>get("codigo"), filtro.getCodigo()));
+        }
+        if (StringUtils.hasText(filtro.getNome())) {
+            predicateListTotal.add(builder.like(builder.lower(vTotal.<String>get("nome")),
+                    "%" + filtro.getNome().toLowerCase() + "%"));
+        }
+        if (StringUtils.hasText(filtro.getDescricao())) {
+            predicateListTotal.add(builder.like(builder.lower(vTotal.<String>get("descricao")),
+                    "%" + filtro.getDescricao().toLowerCase() + "%"));
+        }
+        predArrayTotal = new Predicate[predicateListTotal.size()];
+        predicateListTotal.toArray(predArrayTotal);
+        criteriaQueryTotal.where(predArrayTotal);
+        TypedQuery<Long> typedQueryTotal = em.createQuery(criteriaQueryTotal);
+        long totalVacinas = typedQueryTotal.getSingleResult();
+        logger.info("O filtro retornará {} registros.", totalVacinas);
+        Page<Vacina> page = new PageImpl<>(vacinas, pageable, totalVacinas);
+        return page;
     }
-
 }

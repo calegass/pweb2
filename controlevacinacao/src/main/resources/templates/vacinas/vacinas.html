@@ -9,12 +9,13 @@
 <body>
 <!-- conteudo principal -->
 <main layout:fragment="conteudo" class="flex flex-col items-center justify-center w-full px-4 py-8">
-    <h1 th:if="${#lists.isEmpty(vacinas)}">Não foram encontradas vacinas que correspondem a esses critérios.</h1>
-    <div th:if="${not #lists.isEmpty(vacinas)}" class="w-full max-w-4xl overflow-x-auto">
+    <h1 th:if="${pagina.vazia}">Não foram encontradas vacinas que correspondem a esses critérios.</h1>
+    <div th:if="${not pagina.vazia}" class="w-full max-w-4xl overflow-x-auto">
         <table class="min-w-full table-auto bg-white shadow-md rounded-lg overflow-hidden">
             <thead class="bg-gray-200">
             <tr>
-                <th class="px-4 py-2 text-left font-medium text-gray-700">Código</th>
+                <div class="px-4 py-2 text-left font-medium text-gray-700"
+                     th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'codigo', 'Código', '')}"></div>
                 <th class="px-4 py-2 text-left font-medium text-gray-700">Nome</th>
                 <th class="px-4 py-2 text-left font-medium text-gray-700">Descrição</th>
                 <!--descricao ações envolvendo alterar e remover acoes-->
@@ -23,7 +24,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="vacina : ${vacinas}" class="odd:bg-gray-100 even:bg-white">
+            <tr th:each="vacina : ${pagina.conteudo}" class="odd:bg-gray-100 even:bg-white">
                 <td class="border px-4 py-2 text-gray-800" th:text="${vacina.codigo}"></td>
                 <td class="border px-4 py-2 text-gray-800" th:text="${vacina.nome}"></td>
                 <td class="border px-4 py-2 text-gray-800" th:text="${vacina.descricao}"></td>
@@ -53,6 +54,7 @@
             </tbody>
         </table>
     </div>
+    <div th:replace="~{layout/fragments/paginacao :: paginacao(${pagina})}"></div>
 </main>
 <!-- !conteudo principal -->
 

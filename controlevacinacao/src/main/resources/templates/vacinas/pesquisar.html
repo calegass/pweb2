@@ -10,7 +10,7 @@
 <!-- conteudo principal -->
 <main layout:fragment="conteudo" class="flex flex-col w-full">
     <!-- Formulario -->
-    <form th:action="@{/vacinas/pesquisar}" method="post" class="mt-10 ml-10">
+    <form th:action="@{/vacinas/pesquisar}" method="get" class="mt-10 ml-10">
         <label for="codigo" class="block text-gray-700 font-medium mb-2">Código</label>
         <input type="text" id="codigo" name="codigo"
                class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none"/>
