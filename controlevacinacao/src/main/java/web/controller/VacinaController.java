@@ -1,7 +1,5 @@
 package web.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,17 +8,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import web.filter.VacinaFilter;
 import web.model.Vacina;
 import web.repository.VacinaRepository;
+import web.service.VacinaService;
 
 import java.util.List;
 
 @Controller
 @RequestMapping("/vacinas")
 public class VacinaController {
-    private Logger logger = LoggerFactory.getLogger(VacinaController.class);
+    //    private Logger logger = LoggerFactory.getLogger(VacinaController.class);
     private final VacinaRepository repository;
+    private final VacinaService vacinaService;
 
-    public VacinaController(VacinaRepository repository) {
+    public VacinaController(VacinaRepository repository, VacinaService vacinaService) {
         this.repository = repository;
+        this.vacinaService = vacinaService;
     }
 
     @GetMapping("/todas")
@@ -37,20 +38,19 @@ public class VacinaController {
     public String abrirCadastroVacina(Model model) {
         Vacina vacina = new Vacina();
         model.addAttribute("vacina", vacina);
-
         return "vacinas/nova";
     }
 
     @PostMapping("/nova")
     public String cadastrarVacina(Vacina vacina) {
-        repository.save(vacina);
-
+        vacinaService.salvar(vacina);
         return "redirect:/vacinas/sucesso";
     }
 
     @GetMapping("/sucesso")
-    public String sucessoCadastro() {
-        return "vacinas/sucesso";
+    public String sucessoCadastro(Model model) {
+        model.addAttribute("mensagem", "Vacina cadastrada com sucesso!");
+        return "mensagem";
     }
 
     @GetMapping("/pesquisar")
@@ -65,5 +65,22 @@ public class VacinaController {
         model.addAttribute("vacinas", vacinas);
 
         return "vacinas/vacinas";
+    }
+
+    @PostMapping("/abriralterar")
+    public String abrirAlterar(Vacina vacina) {
+        return "vacinas/alterar";
+    }
+
+    @PostMapping("/alterar")
+    public String alterar(Vacina vacina) {
+        vacinaService.alterar(vacina);
+        return "redirect:/vacinas/sucesso2";
+    }
+
+    @GetMapping("/sucesso2")
+    public String sucessoAlteracao(Model model) {
+        model.addAttribute("mensagem", "Vacina alterada com sucesso!");
+        return "mensagem";
     }
 }
