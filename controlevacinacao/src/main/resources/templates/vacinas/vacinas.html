@@ -28,7 +28,7 @@
                 <td class="border px-4 py-2 text-gray-800" th:text="${vacina.codigo}"></td>
                 <td class="border px-4 py-2 text-gray-800" th:text="${vacina.nome}"></td>
                 <td class="border px-4 py-2 text-gray-800" th:text="${vacina.descricao}"></td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 flex justify-center items-center gap-2">
                     <form th:action="@{/vacinas/abriralterar}" method="post" class="inline-block">
                         <input type="hidden" name="codigo" th:value="${vacina.codigo}">
                         <input type="hidden" name="nome" th:value="${vacina.nome}">
@@ -39,8 +39,7 @@
                         </button>
                     </form>
 
-                    <!-- Formulário para "Remover" -->
-                    <form th:action="@{/vacinas/abrirremover}" method="post" class="inline-block ml-2">
+                    <form th:action="@{/vacinas/abrirremover}" method="post" class="inline-block">
                         <input type="hidden" name="codigo" th:value="${vacina.codigo}">
                         <input type="hidden" name="nome" th:value="${vacina.nome}">
                         <input type="hidden" name="descricao" th:value="${vacina.descricao}">

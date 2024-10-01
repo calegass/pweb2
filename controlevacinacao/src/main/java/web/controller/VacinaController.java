@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import web.filter.VacinaFilter;
+import web.model.Status;
 import web.model.Vacina;
 import web.pagination.PageWrapper;
 import web.repository.VacinaRepository;
@@ -105,7 +106,8 @@ public class VacinaController {
 
     @PostMapping("/remover")
     public String remover(Vacina vacina) {
-        vacinaService.remover(vacina);
+        vacina.setStatus(Status.INATIVO);
+        vacinaService.alterar(vacina);
         return "redirect:/vacinas/sucesso3";
     }
 

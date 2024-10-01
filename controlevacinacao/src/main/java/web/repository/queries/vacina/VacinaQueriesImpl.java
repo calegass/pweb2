@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 import web.filter.VacinaFilter;
+import web.model.Status;
 import web.model.Vacina;
 import web.repository.pagination.PaginacaoUtil;
 
@@ -48,6 +49,7 @@ public class VacinaQueriesImpl implements VacinaQueries {
             predicateList.add(builder.like(builder.lower(v.<String>get("descricao")),
                     "%" + filtro.getDescricao().toLowerCase() + "%"));
         }
+        predicateList.add(builder.equal(v.<Status>get("status"), Status.ATIVO));
         predArray = new Predicate[predicateList.size()];
         predicateList.toArray(predArray);
         criteriaQuery.select(v).where(predArray);
@@ -71,6 +73,7 @@ public class VacinaQueriesImpl implements VacinaQueries {
             predicateListTotal.add(builder.like(builder.lower(vTotal.<String>get("descricao")),
                     "%" + filtro.getDescricao().toLowerCase() + "%"));
         }
+        predicateListTotal.add(builder.equal(vTotal.<Status>get("status"), Status.ATIVO));
         predArrayTotal = new Predicate[predicateListTotal.size()];
         predicateListTotal.toArray(predArrayTotal);
         criteriaQueryTotal.where(predArrayTotal);
