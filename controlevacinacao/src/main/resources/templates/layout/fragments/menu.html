@@ -85,8 +85,7 @@
               <path d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1M.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8z" />
             </svg>
             <!-- Texto -->
-            <a th:href="@{/vacinas/nova}" class="px-2 text-gray-400 hover:text-white">Cadastrar</a>
-          </div>
+            <a th:hx-get="@{/vacinas/nova}" hx-target="#main" hx-swap="outerHTML" hx-push-url="true" class="cursor-pointer px-2 text-gray-400 hover:text-white">Cadastrar</a>          </div>
           <!-- 2a Opcao -->
           <div class="flex items-center hover:text-white">
             <!-- Imagem -->
@@ -94,7 +93,7 @@
               <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
             </svg>
             <!-- Texto -->
-            <a th:href="@{/vacinas/abrirpesquisar}" class="px-2 text-gray-400 hover:text-white">Pesquisar</a>
+            <a th:hx-get="@{/vacinas/abrirpesquisar}" hx-target="#main" hx-swap="outerHTML" hx-push-url="true" class="cursor-pointer px-2 text-gray-400 hover:text-white">Pesquisar</a>
           </div>
           <!-- 3a Opcao -->
 <!--          <div class="flex items-center hover:text-white">-->

@@ -8,9 +8,10 @@
 </head>
 <body>
 <!-- conteudo principal -->
-<main layout:fragment="conteudo" class="flex flex-col items-center justify-center w-full px-4 py-8">
+<main layout:fragment="conteudo" th:fragment="formulario" id="main"
+      class="flex flex-col items-center justify-center w-full px-4 py-8">
     <div class="w-full max-w-4xl overflow-x-auto">
-        <form th:action="@{/vacinas/nova}" th:object="${vacina}" method="post">
+        <form th:hx-post="@{/vacinas/nova}" th:object="${vacina}">
             <div class="flex flex-col">
                 <label for="nome" class="text-gray-700">Nome</label>
                 <input type="text" th:field="*{nome}" name="nome"

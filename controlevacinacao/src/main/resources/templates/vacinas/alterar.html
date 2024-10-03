@@ -8,13 +8,15 @@
 </head>
 <body>
 <!-- conteudo principal -->
-<main layout:fragment="conteudo" class="flex flex-col items-center justify-center w-full px-4 py-8">
+<main layout:fragment="conteudo" th:fragment="formulario" id="main"
+      class="flex flex-col items-center justify-center w-full px-4 py-8">
     <div class="w-full max-w-4xl overflow-x-auto">
-        <form th:action="@{/vacinas/alterar}" th:object="${vacina}" method="post">
+        <form th:hx-post="@{/vacinas/alterar}" th:object="${vacina}">
             <div class="flex flex-col">
+                <input type="hidden" th:field="*{codigo}"/>
                 <label for="codigo" class="text-gray-700">Código</label>
-                <input type="text" th:field="*{codigo}" name="nome"
-                       class="border border-gray-300 rounded-lg px-4 py-2 mt-2"/>
+                <input type="text" th:field="*{codigo}" name="codigo" disabled
+                       class="disabled:opacity-50 border border-gray-300 rounded-lg px-4 py-2 mt-2"/>
             </div>
             <div class="flex flex-col">
                 <label for="nome" class="text-gray-700">Nome</label>

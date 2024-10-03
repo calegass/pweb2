@@ -8,7 +8,8 @@
 </head>
 <body>
 <!-- conteudo principal -->
-<main layout:fragment="conteudo" class="flex flex-col items-center justify-center w-full px-4 py-8">
+<main layout:fragment="conteudo" th:fragment="confirmacao" id="main"
+      class="flex flex-col items-center justify-center w-full px-4 py-8">
     <div class="w-full max-w-4xl mx-auto text-center space-y-6">
         <h1 class="text-2xl md:text-4xl text-center">Tem certeza que deseja remover a vacina?</h1>
         <h2 class="text-lg md:text-2xl text-center">Código: <span th:text="${vacina.codigo}"></span></h2>
@@ -18,7 +19,7 @@
         <!-- Formulários de Ação -->
         <div class="flex justify-center space-x-4 mt-6">
             <!-- Formulário para "Remover" -->
-            <form th:action="@{/vacinas/remover}" method="post">
+            <form th:hx-post="@{/vacinas/remover}" hx-target="#main" hx-swap="outerHTML">
                 <input type="hidden" name="codigo" th:value="${vacina.codigo}">
                 <input type="hidden" name="nome" th:value="${vacina.nome}">
                 <input type="hidden" name="descricao" th:value="${vacina.descricao}">
@@ -29,7 +30,7 @@
             </form>
 
             <!-- Formulário para "Voltar" -->
-            <form th:action="@{/vacinas/pesquisar}" method="post">
+            <form th:hx-get="@{/vacinas/pesquisar}" hx-target="#main" hx-swap="outerHTML">
                 <button type="submit"
                         class="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none">
                     Voltar
