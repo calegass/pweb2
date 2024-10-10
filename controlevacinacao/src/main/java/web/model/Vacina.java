@@ -1,6 +1,7 @@
 package web.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serializable;
 
@@ -14,7 +15,9 @@ public class Vacina implements Serializable {
     @SequenceGenerator(name = "gerador5", sequenceName = "vacina_codigo_seq", allocationSize = 1)
     @GeneratedValue(generator = "gerador5", strategy = GenerationType.SEQUENCE)
     private Long codigo;
+    @NotBlank(message = "O nome é obrigatório")
     private String nome;
+    @NotBlank(message = "A descrição é obrigatória")
     private String descricao;
     @Enumerated(EnumType.STRING)
     private Status status = Status.ATIVO;

@@ -2,6 +2,7 @@ package web.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -124,10 +127,19 @@ public class VacinaController {
     }
 
     @PostMapping(value = "/nova", headers = "HX-Request")
-    public String cadastrarVacinaHTMX(Vacina vacina, HttpServletResponse response) {
-        vacinaService.salvar(vacina);
-        response.setHeader("HX-Location", "{\"path\":\"/vacinas/sucesso\", \"target\":\"#main\"}");
-        return "mensagem";
+    public String cadastrarVacinaHTMX(@Valid Vacina vacina, BindingResult result, HttpServletResponse response) {
+        if (result.hasErrors()) {
+            logger.info("A vacina recebida para cadastrar não é válida.");
+            logger.info("Erros encontrados:");
+            for (FieldError erro : result.getFieldErrors()) {
+                logger.info("{}", erro);
+            }
+            return "vacinas/nova :: formulario";
+        } else {
+            vacinaService.salvar(vacina);
+            response.setHeader("HX-Location", "{\"path\":\"/vacinas/sucesso\", \"target\":\"#main\"}");
+            return "mensagem";
+        }
     }
 
     @GetMapping(value = "/sucesso", headers = "HX-Request")
