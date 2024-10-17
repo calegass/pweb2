@@ -1,9 +1,15 @@
 package web.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,7 +17,10 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import web.filter.PessoaFilter;
 import web.model.Pessoa;
+import web.model.Status;
+import web.pagination.PageWrapper;
 import web.repository.PessoaRepository;
 import web.service.PessoaService;
 
@@ -65,84 +74,57 @@ public class PessoaController {
         model.addAttribute("mensagem", "Pessoa cadastrada com sucesso");
         return "mensagem :: texto";
     }
-}
 
-//@GetMapping(value = "/nova", headers = "HX-Request")
-//public String abrirCadastroVacinaHTMX(Vacina vacina) {
-//    return "vacinas/nova :: formulario";
-//}
-//
-//@PostMapping(value = "/nova", headers = "HX-Request")
-//public String cadastrarVacinaHTMX(@Valid Vacina vacina, BindingResult result, HttpServletResponse response) {
-//    if (result.hasErrors()) {
-//        logger.info("A vacina recebida para cadastrar não é válida.");
-//        logger.info("Erros encontrados:");
-//        for (FieldError erro : result.getFieldErrors()) {
-//            logger.info("{}", erro);
-//        }
-//        return "vacinas/nova :: formulario";
-//    } else {
-//        vacinaService.salvar(vacina);
-//        response.setHeader("HX-Location", "{\"path\":\"/vacinas/sucesso\", \"target\":\"#main\"}");
-//        return "mensagem";
-//    }
-//}
-//
-//@GetMapping(value = "/sucesso", headers = "HX-Request")
-//public String abrirMensagemSucessoHTMX(Model model) {
-//    model.addAttribute("mensagem", "Vacina cadastrada com sucesso");
-//    return "mensagem :: texto";
-//}
-//
-//@GetMapping(value = "/abrirpesquisar", headers = "HX-Request")
-//public String abrirPaginaPesquisaHTMX() {
-//    return "vacinas/pesquisar :: formulario";
-//}
-//
-//@GetMapping(value = "/pesquisar", headers = "HX-Request")
-//public String pesquisarHTMX(VacinaFilter filtro, Model model,
-//                            @PageableDefault(size = 7) @SortDefault(sort = "codigo", direction = Sort.Direction.ASC) Pageable pageable,
-//                            HttpServletRequest request) {
-//    Page<Vacina> pagina = repository.pesquisar(filtro, pageable);
-//    logger.info("Vacinas pesquisadas: {}", pagina);
-//    PageWrapper<Vacina> paginaWrapper = new PageWrapper<>(pagina, request);
-//    model.addAttribute("pagina", paginaWrapper);
-//    return "vacinas/vacinas :: tabela";
-//}
-//
-//@PostMapping(value = "/abriralterar", headers = "HX-Request")
-//public String abrirAlterarHTMX(Vacina vacina) {
-//    return "vacinas/alterar :: formulario";
-//}
-//
-//@PostMapping(value = "/alterar", headers = "HX-Request")
-//public String alterarHTMX(Vacina vacina, HttpServletResponse response) {
-//    vacinaService.alterar(vacina);
-//    response.setHeader("HX-Location", "{\"path\":\"/vacinas/sucesso2\", \"target\":\"#main\"}");
-//    return "mensagem";
-//}
-//
-//@GetMapping(value = "/sucesso2", headers = "HX-Request")
-//public String abrirMensagemSucesso2HTMX(Model model) {
-//    model.addAttribute("mensagem", "Vacina alterada com sucesso");
-//    return "mensagem :: texto";
-//}
-//
-//@PostMapping(value = "/abrirremover", headers = "HX-Request")
-//public String abrirRemoverHTMX(Vacina vacina) {
-//    return "vacinas/confirmarremocao :: confirmacao";
-//}
-//
-//@PostMapping(value = "/remover", headers = "HX-Request")
-//public String removerHTMX(Vacina vacina, HttpServletResponse response) {
-//    vacina.setStatus(Status.INATIVO);
-//    vacinaService.alterar(vacina);
-//    response.setHeader("HX-Location", "{\"path\":\"/vacinas/sucesso3\", \"target\":\"#main\"}");
-//    return "mensagem";
-//}
-//
-//@GetMapping(value = "/sucesso3", headers = "HX-Request")
-//public String abrirMensagemSucesso3HTMX(Model model) {
-//    model.addAttribute("mensagem", "Vacina removida com sucesso");
-//    return "mensagem :: texto";
-//}
+    @GetMapping(value = "/abrirpesquisar", headers = "HX-Request")
+    public String abrirPaginaPesquisaHTMX() {
+        return "pessoas/pesquisar :: formulario";
+    }
+
+    @GetMapping(value = "/pesquisar", headers = "HX-Request")
+    public String pesquisarHTMX(PessoaFilter filtro, Model model,
+                                @PageableDefault(size = 7) @SortDefault(sort = "codigo", direction = Sort.Direction.ASC) Pageable pageable,
+                                HttpServletRequest request) {
+        Page<Pessoa> pagina = repository.pesquisar(filtro, pageable);
+        logger.info("Pessoas pesquisadas: {}", pagina);
+        PageWrapper<Pessoa> paginaWrapper = new PageWrapper<>(pagina, request);
+        model.addAttribute("pagina", paginaWrapper);
+        return "pessoas/pessoas :: tabela";
+    }
+
+    @PostMapping(value = "/abriralterar", headers = "HX-Request")
+    public String abrirAlterarHTMX(Pessoa pessoa) {
+        return "pessoas/alterar :: formulario";
+    }
+
+    @PostMapping(value = "/alterar", headers = "HX-Request")
+    public String alterarHTMX(Pessoa pessoa, HttpServletResponse response) {
+        pessoaService.alterar(pessoa);
+        response.setHeader("HX-Location", "{\"path\":\"/pessoas/sucesso2\", \"target\":\"#main\"}");
+        return "mensagem";
+    }
+
+    @GetMapping(value = "/sucesso2", headers = "HX-Request")
+    public String abrirMensagemSucesso2HTMX(Model model) {
+        model.addAttribute("mensagem", "Pessoa alterada com sucesso");
+        return "mensagem :: texto";
+    }
+
+    @PostMapping(value = "/abrirremover", headers = "HX-Request")
+    public String abrirRemoverHTMX(Pessoa pessoa) {
+        return "pessoas/confirmarremocao :: confirmacao";
+    }
+
+    @PostMapping(value = "/remover", headers = "HX-Request")
+    public String removerHTMX(Pessoa pessoa, HttpServletResponse response) {
+        pessoa.setStatus(Status.INATIVO);
+        pessoaService.alterar(pessoa);
+        response.setHeader("HX-Location", "{\"path\":\"/pessoas/sucesso3\", \"target\":\"#main\"}");
+        return "mensagem";
+    }
+
+    @GetMapping(value = "/sucesso3", headers = "HX-Request")
+    public String abrirMensagemSucesso3HTMX(Model model) {
+        model.addAttribute("mensagem", "Pessoa removida com sucesso");
+        return "mensagem :: texto";
+    }
+}

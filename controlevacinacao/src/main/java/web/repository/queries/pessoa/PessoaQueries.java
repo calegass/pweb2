@@ -1,9 +1,12 @@
 package web.repository.queries.pessoa;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import web.filter.PessoaFilter;
 import web.model.Pessoa;
 
 public interface PessoaQueries {
 
-    Pessoa buscarComProfissao(String cpf);
+    Page<Pessoa> pesquisar(PessoaFilter filtro, Pageable pageable);
 
 }
