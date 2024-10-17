@@ -3,7 +3,6 @@ package web.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -19,7 +18,7 @@ public class Pessoa implements Serializable {
     private String nome;
     private String cpf;
     @Column(name = "data_nascimento")
-    private LocalDate dataNascimento;
+    private String dataNascimento;
     private String profissao;
     @Enumerated(EnumType.STRING)
     private Status status = Status.ATIVO;
@@ -48,11 +47,11 @@ public class Pessoa implements Serializable {
         this.cpf = cpf;
     }
 
-    public LocalDate getDataNascimento() {
+    public String getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(LocalDate dataNascimento) {
+    public void setDataNascimento(String dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 

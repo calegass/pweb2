@@ -1,13 +1,11 @@
 package web.filter;
 
-import java.time.LocalDate;
-
 public class PessoaFilter {
 
     private Long codigo;
     private String nome;
     private String cpf;
-    private LocalDate dataNascimento;
+    private String dataNascimento;
     private String profissao;
 
     public Long getCodigo() {
@@ -34,11 +32,11 @@ public class PessoaFilter {
         this.cpf = cpf;
     }
 
-    public LocalDate getDataNascimento() {
+    public String getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(LocalDate dataNascimento) {
+    public void setDataNascimento(String dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
