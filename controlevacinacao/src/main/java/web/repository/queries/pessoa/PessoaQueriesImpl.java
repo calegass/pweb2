@@ -1,4 +1,3 @@
-/*
 package web.repository.queries.pessoa;
 
 import jakarta.persistence.EntityManager;
@@ -6,7 +5,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import web.controlevacinacao.model.Pessoa;
+import web.model.Pessoa;
 
 public class PessoaQueriesImpl implements PessoaQueries {
 
@@ -28,4 +27,3 @@ public class PessoaQueriesImpl implements PessoaQueries {
     }
 
 }
-*/
