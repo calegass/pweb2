@@ -30,7 +30,7 @@ public class ErrosController implements ErrorController {
                 return "error/500";
             }
         }
-        return "error";
+        return "error :: mensagem";
     }
 
     public String getErrorPath() {

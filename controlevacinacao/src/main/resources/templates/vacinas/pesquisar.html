@@ -26,8 +26,12 @@
             Pesquisar
         </button>
     </form>
+    <div th:if="${notificacao != null}" th:object="${notificacao}">
+        <input type="hidden" id="mensagem" th:value="*{mensagem}">
+        <input type="hidden" id="tipo" th:value="*{tipo}">
+        <input type="hidden" id="intervalo" th:value="*{intervalo}">
+    </div>
 </main>
 <!-- !conteudo principal -->
 </body>
 </html>
-

@@ -1,8 +1,5 @@
 package web.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -17,42 +14,55 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import io.github.wimdeblauwe.htmx.spring.boot.mvc.HtmxLocation;
+import io.github.wimdeblauwe.htmx.spring.boot.mvc.HtmxResponse;
+import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxLocation;
+import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRequest;
+import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxTriggerAfterSwap;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import web.filter.VacinaFilter;
 import web.model.Status;
 import web.model.Vacina;
+import web.notificacao.NotificacaoSweetAlert2;
+import web.notificacao.TipoNotificaoSweetAlert2;
 import web.pagination.PageWrapper;
 import web.repository.VacinaRepository;
 import web.service.VacinaService;
 
-import java.util.List;
-
 @Controller
 @RequestMapping("/vacinas")
 public class VacinaController {
-    private Logger logger = LoggerFactory.getLogger(VacinaController.class);
-    private final VacinaRepository repository;
-    private final VacinaService vacinaService;
 
-    public VacinaController(VacinaRepository repository, VacinaService vacinaService) {
-        this.repository = repository;
+    private static final Logger logger = LoggerFactory.getLogger(VacinaController.class);
+
+    private VacinaRepository vacinaRepository;
+    private VacinaService vacinaService;
+
+    public VacinaController(VacinaRepository vacinaRepository, VacinaService vacinaService) {
+        this.vacinaRepository = vacinaRepository;
         this.vacinaService = vacinaService;
     }
 
-    @GetMapping("/todas")
-    public String todasVacinas(Model model) {
-        List<Vacina> vacinas = repository.findAll();
-        model.addAttribute("vacinas", vacinas);
-
-//        logger.info("Exibindo todas as vacinas: {}", vacinas);
-
-        return "vacinas/todas";
-    }
+    // @GetMapping("/todas")
+    // public String mostrarTodasVacinas(Model model) {
+    // List<Vacina> vacinas = vacinaRepository.findAll();
+    // logger.info("Vacinas buscadas: {}", vacinas);
+    // model.addAttribute("vacinas", vacinas);
+    // return "vacinas/todas";
+    // }
 
     @GetMapping("/nova")
-    public String abrirCadastroVacina(Model model) {
-        Vacina vacina = new Vacina();
-        model.addAttribute("vacina", vacina);
+    public String abrirCadastroVacina(Vacina vacina) {
         return "vacinas/nova";
+    }
+
+    @HxRequest
+    @GetMapping("/nova")
+    public String abrirCadastroVacinaHTMX(Vacina vacina) {
+        return "vacinas/nova :: formulario";
     }
 
     @PostMapping("/nova")
@@ -62,32 +72,84 @@ public class VacinaController {
     }
 
     @GetMapping("/sucesso")
-    public String sucessoCadastro(Model model) {
-        model.addAttribute("mensagem", "Vacina cadastrada com sucesso!");
+    public String abrirMensagemSucesso(Model model) {
+        model.addAttribute("mensagem", "Vacina cadastrada com sucesso");
         return "mensagem";
     }
 
+    @HxRequest
+    @PostMapping("/nova")
+    public String cadastrarVacinaHTMX(@Valid Vacina vacina, BindingResult result, HtmxResponse.Builder htmxResponse) {
+        if (result.hasErrors()) {
+            logger.info("A vacina recebida para cadastrar não é válida.");
+            logger.info("Erros encontrados:");
+            for (FieldError erro : result.getFieldErrors()) {
+                logger.info("{}", erro);
+            }
+            return "vacinas/nova :: formulario";
+        } else {
+            vacinaService.salvar(vacina);
+            HtmxLocation hl = new HtmxLocation("/vacinas/sucesso");
+            hl.setTarget("#main");
+            hl.setSwap("outerHTML");
+            htmxResponse.location(hl);
+            return "mensagem";
+        }
+    }
+
+    @HxRequest
+    @HxTriggerAfterSwap("htmlAtualizado")
+    @GetMapping("/sucesso")
+    public String abrirMensagemSucessoHTMX(Vacina vacina, Model model) {
+        model.addAttribute("notificacao", new NotificacaoSweetAlert2("Vacina cadastrada com sucesso!",
+                TipoNotificaoSweetAlert2.SUCCESS, 4000));
+        return "vacinas/nova :: formulario";
+    }
+
     @GetMapping("/abrirpesquisar")
-    public String pesquisar(Model model) {
-        model.addAttribute("vacinaFilter", new VacinaFilter());
+    public String abrirPaginaPesquisa() {
         return "vacinas/pesquisar";
     }
 
+    @HxRequest
+    @GetMapping("/abrirpesquisar")
+    public String abrirPaginaPesquisaHTMX() {
+        return "vacinas/pesquisar :: formulario";
+    }
+
     @GetMapping("/pesquisar")
-    public String pesquisar(VacinaFilter filter, Model model,
-                            @PageableDefault(size = 7)
-                            @SortDefault(sort = "codigo", direction = Sort.Direction.ASC) Pageable pageable,
-                            HttpServletRequest request) {
-        Page<Vacina> pagina = repository.pesquisar(filter, pageable);
-        logger.info("Exibindo a página de vacinas pesquisadas: {}", pagina);
+    public String pesquisar(VacinaFilter filtro, Model model,
+            @PageableDefault(size = 7) @SortDefault(sort = "codigo", direction = Sort.Direction.ASC) Pageable pageable,
+            HttpServletRequest request) {
+        Page<Vacina> pagina = vacinaRepository.pesquisar(filtro, pageable);
+        logger.info("Vacinas pesquisadas: {}", pagina);
         PageWrapper<Vacina> paginaWrapper = new PageWrapper<>(pagina, request);
         model.addAttribute("pagina", paginaWrapper);
         return "vacinas/vacinas";
     }
 
+    @HxRequest
+    @HxTriggerAfterSwap("htmlAtualizado")
+    @GetMapping("/pesquisar")
+    public String pesquisarHTMX(VacinaFilter filtro, Model model,
+            @PageableDefault(size = 7) @SortDefault(sort = "codigo", direction = Sort.Direction.ASC) Pageable pageable,
+            HttpServletRequest request) {
+        Page<Vacina> pagina = vacinaRepository.pesquisar(filtro, pageable);
+        logger.info("Vacinas pesquisadas: {}", pagina);
+        PageWrapper<Vacina> paginaWrapper = new PageWrapper<>(pagina, request);
+        model.addAttribute("pagina", paginaWrapper);
+        return "vacinas/vacinas :: tabela";
+    }
+
     @PostMapping("/abriralterar")
     public String abrirAlterar(Vacina vacina) {
         return "vacinas/alterar";
+    }
+
+    @HxRequest
+    @PostMapping("/abriralterar")
+    public String abrirAlterarHTMX(Vacina vacina) {
+        return "vacinas/alterar :: formulario";
     }
 
     @PostMapping("/alterar")
@@ -97,15 +159,38 @@ public class VacinaController {
     }
 
     @GetMapping("/sucesso2")
-    public String sucessoAlteracao(Model model) {
-        model.addAttribute("mensagem", "Vacina alterada com sucesso!");
+    public String abrirMensagemSucesso2(Model model) {
+        model.addAttribute("mensagem", "Vacina alterada com sucesso");
         return "mensagem";
     }
 
-    @PostMapping("/abrirremover")
-    public String abrirRemover(Vacina vacina, Model model) {
-        model.addAttribute("vacina", vacina);
-        return "vacinas/confirmarremocao";
+    @HxRequest
+    @PostMapping("/alterar")
+    public String alterarHTMX(@Valid Vacina vacina, BindingResult result, HtmxResponse.Builder htmxResponse) {
+        if (result.hasErrors()) {
+            logger.info("A vacina recebida para alterar não é válida.");
+            logger.info("Erros encontrados:");
+            for (FieldError erro : result.getFieldErrors()) {
+                logger.info("{}", erro);
+            }
+            return "vacinas/alterar :: formulario";
+        } else {
+            vacinaService.alterar(vacina);
+            HtmxLocation hl = new HtmxLocation("/vacinas/sucesso2");
+            hl.setTarget("#main");
+            hl.setSwap("outerHTML");
+            htmxResponse.location(hl);
+            return "mensagem";
+        }
+    }
+
+    @HxRequest
+    @HxTriggerAfterSwap("htmlAtualizado")
+    @GetMapping("/sucesso2")
+    public String abrirMensagemSucesso2HTMX(Model model) {
+        model.addAttribute("notificacao", new NotificacaoSweetAlert2("Vacina alterada com sucesso!",
+                TipoNotificaoSweetAlert2.SUCCESS, 4000));
+        return "vacinas/pesquisar :: formulario";
     }
 
     @PostMapping("/remover")
@@ -116,88 +201,27 @@ public class VacinaController {
     }
 
     @GetMapping("/sucesso3")
-    public String sucessoRemocao(Model model) {
-        model.addAttribute("mensagem", "Vacina removida com sucesso!");
+    public String abrirMensagemSucesso3(Model model) {
+        model.addAttribute("mensagem", "Vacina removida com sucesso");
         return "mensagem";
     }
 
-    @GetMapping(value = "/nova", headers = "HX-Request")
-    public String abrirCadastroVacinaHTMX(Vacina vacina) {
-        return "vacinas/nova :: formulario";
+    @HxRequest
+    @HxLocation(path = "/vacinas/sucesso3", target = "#main", swap = "outerHTML")
+    @PostMapping("/remover")
+    public String removerHTMX(Vacina vacina) {
+        vacina.setStatus(Status.INATIVO);
+        vacinaService.alterar(vacina);
+        return "mensagem";
     }
 
-    @PostMapping(value = "/nova", headers = "HX-Request")
-    public String cadastrarVacinaHTMX(@Valid Vacina vacina, BindingResult result, HttpServletResponse response) {
-        if (result.hasErrors()) {
-            logger.info("A vacina recebida para cadastrar não é válida.");
-            logger.info("Erros encontrados:");
-            for (FieldError erro : result.getFieldErrors()) {
-                logger.info("{}", erro);
-            }
-            return "vacinas/nova :: formulario";
-        } else {
-            vacinaService.salvar(vacina);
-            response.setHeader("HX-Location", "{\"path\":\"/vacinas/sucesso\", \"target\":\"#main\"}");
-            return "mensagem";
-        }
-    }
-
-    @GetMapping(value = "/sucesso", headers = "HX-Request")
-    public String abrirMensagemSucessoHTMX(Model model) {
-        model.addAttribute("mensagem", "Vacina cadastrada com sucesso");
-        return "mensagem :: texto";
-    }
-
-    @GetMapping(value = "/abrirpesquisar", headers = "HX-Request")
-    public String abrirPaginaPesquisaHTMX() {
+    @HxRequest
+    @HxTriggerAfterSwap("htmlAtualizado")
+    @GetMapping("/sucesso3")
+    public String abrirMensagemSucesso3HTMX(Model model) {
+        model.addAttribute("notificacao", new NotificacaoSweetAlert2("Vacina removida com sucesso!",
+                TipoNotificaoSweetAlert2.SUCCESS, 4000));
         return "vacinas/pesquisar :: formulario";
     }
 
-    @GetMapping(value = "/pesquisar", headers = "HX-Request")
-    public String pesquisarHTMX(VacinaFilter filtro, Model model,
-                                @PageableDefault(size = 7) @SortDefault(sort = "codigo", direction = Sort.Direction.ASC) Pageable pageable,
-                                HttpServletRequest request) {
-        Page<Vacina> pagina = repository.pesquisar(filtro, pageable);
-        logger.info("Vacinas pesquisadas: {}", pagina);
-        PageWrapper<Vacina> paginaWrapper = new PageWrapper<>(pagina, request);
-        model.addAttribute("pagina", paginaWrapper);
-        return "vacinas/vacinas :: tabela";
-    }
-
-    @PostMapping(value = "/abriralterar", headers = "HX-Request")
-    public String abrirAlterarHTMX(Vacina vacina) {
-        return "vacinas/alterar :: formulario";
-    }
-
-    @PostMapping(value = "/alterar", headers = "HX-Request")
-    public String alterarHTMX(Vacina vacina, HttpServletResponse response) {
-        vacinaService.alterar(vacina);
-        response.setHeader("HX-Location", "{\"path\":\"/vacinas/sucesso2\", \"target\":\"#main\"}");
-        return "mensagem";
-    }
-
-    @GetMapping(value = "/sucesso2", headers = "HX-Request")
-    public String abrirMensagemSucesso2HTMX(Model model) {
-        model.addAttribute("mensagem", "Vacina alterada com sucesso");
-        return "mensagem :: texto";
-    }
-
-    @PostMapping(value = "/abrirremover", headers = "HX-Request")
-    public String abrirRemoverHTMX(Vacina vacina) {
-        return "vacinas/confirmarremocao :: confirmacao";
-    }
-
-    @PostMapping(value = "/remover", headers = "HX-Request")
-    public String removerHTMX(Vacina vacina, HttpServletResponse response) {
-        vacina.setStatus(Status.INATIVO);
-        vacinaService.alterar(vacina);
-        response.setHeader("HX-Location", "{\"path\":\"/vacinas/sucesso3\", \"target\":\"#main\"}");
-        return "mensagem";
-    }
-
-    @GetMapping(value = "/sucesso3", headers = "HX-Request")
-    public String abrirMensagemSucesso3HTMX(Model model) {
-        model.addAttribute("mensagem", "Vacina removida com sucesso");
-        return "mensagem :: texto";
-    }
 }

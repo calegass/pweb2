@@ -28,6 +28,8 @@ public class PessoaQueriesImpl implements PessoaQueries {
 
     private final Logger logger = LoggerFactory.getLogger(PessoaQueriesImpl.class);
 
+    // Busco de pessoa filter para fazer a querrie
+
     public Page<Pessoa> pesquisar(PessoaFilter filtro, Pageable pageable) {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Pessoa> criteriaQuery = builder.createQuery(Pessoa.class);

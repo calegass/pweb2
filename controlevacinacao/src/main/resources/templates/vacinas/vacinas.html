@@ -42,8 +42,17 @@
                         </button>
                     </form>
 
-                    <form th:hx-post="@{/vacinas/abrirremover}" hx-target="#main" hx-swap="outerHTML"
-                          class="inline-block">
+                    <!-- <form th:hx-post="@{/vacinas/abrirremover}" hx-target="#main" hx-swap="outerHTML" th:hx-confirm="${'Você vai remover a vacina ' + vacina.nome + '!'}" class="inline-block">
+                        <input type="hidden" name="codigo" th:value="${vacina.codigo}">
+                        <input type="hidden" name="nome" th:value="${vacina.nome}">
+                        <input type="hidden" name="descricao" th:value="${vacina.descricao}">
+                        <button type="submit"
+                                class="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-100 text-red-800 hover:bg-red-200 focus:outline-none focus:bg-red-200 disabled:opacity-50 disabled:pointer-events-none">
+                            Remover
+                        </button>
+                    </form> -->
+
+                    <form th:hx-post="@{/vacinas/remover}" hx-target="#main" hx-swap="outerHTML" class="inline-block" th:hx-confirm="${'Você vai remover a vacina ' + vacina.nome}">
                         <input type="hidden" name="codigo" th:value="${vacina.codigo}">
                         <input type="hidden" name="nome" th:value="${vacina.nome}">
                         <input type="hidden" name="descricao" th:value="${vacina.descricao}">

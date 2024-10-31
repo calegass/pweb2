@@ -1,7 +1,7 @@
 package web.service;
 
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import web.model.Pessoa;
 import web.repository.PessoaRepository;
 
@@ -28,4 +28,5 @@ public class PessoaService {
     public void remover(Pessoa pessoa) {
         pessoaRepository.delete(pessoa);
     }
+
 }

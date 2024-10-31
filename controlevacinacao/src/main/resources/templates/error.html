@@ -8,7 +8,8 @@
 </head>
 <body>
 <!-- conteudo principal -->
-<main layout:fragment="conteudo" id="main" class="flex flex-col align-middle justify-center w-full">
+<main layout:fragment="conteudo" th:fragment="mensagem" id="main"
+      class="flex flex-col align-middle justify-center w-full">
     <img th:src="@{/images/erro.png}" class="mx-auto block mt-5" alt="Erro 404">
     <h3 class="text-center mt-5 mb-5">
         Ocorreu um erro na aplicação. <a th:href="@{/}">Volte para a página principal.</a>

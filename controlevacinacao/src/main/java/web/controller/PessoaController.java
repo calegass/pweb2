@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import web.filter.PessoaFilter;
+import web.filter.VacinaFilter;
 import web.model.Pessoa;
 import web.model.Status;
+import web.model.Vacina;
 import web.pagination.PageWrapper;
 import web.repository.PessoaRepository;
 import web.service.PessoaService;
@@ -43,10 +45,85 @@ public class PessoaController {
     public String todasPessoas(Model model) {
         List<Pessoa> pessoas = repository.findAll();
         model.addAttribute("pessoas", pessoas);
+
         logger.info("Exibindo todas as pessoas: {}", pessoas);
 
         return "pessoas/todas";
     }
+
+    @GetMapping("/nova")
+    public String abrirCadastroPessoa(Model model) {
+        Pessoa pessoa = new Pessoa();
+        model.addAttribute("pessoa", pessoa);
+        return "pessoas/nova";
+    }
+
+    @PostMapping("/nova")
+    public String cadastrarPessoa(Pessoa pessoa) {
+        pessoaService.salvar(pessoa);
+        return "redirect:/pessoas/sucesso";
+    }
+
+    @GetMapping("/sucesso")
+    public String sucessoCadastro(Model model) {
+        model.addAttribute("mensagem", "Pessoa cadastrada com sucesso!");
+        return "mensagem";
+    }
+
+    @GetMapping("/abrirpesquisar")
+    public String pesquisar(Model model) {
+        model.addAttribute("pessoaFilter", new PessoaFilter());
+        return "pessoas/pesquisar";
+    }
+
+    @GetMapping("/pesquisar")
+    public String pesquisar(PessoaFilter filter, Model model,
+                            @PageableDefault(size = 7)
+                            @SortDefault(sort = "codigo", direction = Sort.Direction.ASC) Pageable pageable,
+                            HttpServletRequest request) {
+        Page<Pessoa> pagina = repository.pesquisar(filter, pageable);
+        logger.info("Exibindo a página de pessoas pesquisadas: {}", pagina);
+        PageWrapper<Pessoa> paginaWrapper = new PageWrapper<>(pagina, request);
+        model.addAttribute("pagina", paginaWrapper);
+        return "pessoas/pessoas";
+    }
+
+    @PostMapping("/abriralterar")
+    public String abrirAlterar(Pessoa pessoa) {
+        return "pessoas/alterar";
+    }
+
+    @PostMapping("/alterar")
+    public String alterar(Pessoa pessoa) {
+        pessoaService.alterar(pessoa);
+        return "redirect:/pessoas/sucesso2";
+    }
+
+    @GetMapping("/sucesso2")
+    public String sucessoAlteracao(Model model) {
+        model.addAttribute("mensagem", "Pessoa alterada com sucesso!");
+        return "mensagem";
+    }
+
+    @PostMapping("/abrirremover")
+    public String abrirRemover(Pessoa pessoa, Model model) {
+        model.addAttribute("pessoa", pessoa);
+        return "pessoas/confirmarremocao";
+    }
+
+    @PostMapping("/remover")
+    public String remover(Pessoa pessoa) {
+        pessoa.setStatus(Status.INATIVO);
+        pessoaService.alterar(pessoa);
+        return "redirect:/pessoas/sucesso3";
+    }
+
+    @GetMapping("/sucesso3")
+    public String sucessoRemocao(Model model) {
+        model.addAttribute("mensagem", "Pessoa removida com sucesso!");
+        return "mensagem";
+    }
+
 
     @GetMapping(value = "/nova", headers = "HX-Request")
     public String abrirCadastroPessoaHTMX(Pessoa pessoa) {
@@ -54,14 +131,14 @@ public class PessoaController {
     }
 
     @PostMapping(value = "/nova", headers = "HX-Request")
-    public String cadastrarVacinaHTMX(@Valid Pessoa pessoa, BindingResult result, HttpServletResponse response) {
+    public String cadastrarPessoaHTMX(@Valid Pessoa pessoa, BindingResult result, HttpServletResponse response) {
         if (result.hasErrors()) {
-            logger.info("A pessoa recebida para cadastrar não é válida.");
+            logger.info("A pessoa recebida para cadastrar não é valida");
             logger.info("Erros encontrados:");
-            for (FieldError erro : result.getFieldErrors()) {
+            for (FieldError erro: result.getFieldErrors()) {
                 logger.info("{}", erro);
             }
-            return "pessoa/nova :: formulario";
+            return "pessoas/nova :: formulario";
         } else {
             pessoaService.salvar(pessoa);
             response.setHeader("HX-Location", "{\"path\":\"/pessoas/sucesso\", \"target\":\"#main\"}");
@@ -80,6 +157,7 @@ public class PessoaController {
         return "pessoas/pesquisar :: formulario";
     }
 
+
     @GetMapping(value = "/pesquisar", headers = "HX-Request")
     public String pesquisarHTMX(PessoaFilter filtro, Model model,
                                 @PageableDefault(size = 7) @SortDefault(sort = "codigo", direction = Sort.Direction.ASC) Pageable pageable,
@@ -90,6 +168,7 @@ public class PessoaController {
         model.addAttribute("pagina", paginaWrapper);
         return "pessoas/pessoas :: tabela";
     }
+  
 
     @PostMapping(value = "/abriralterar", headers = "HX-Request")
     public String abrirAlterarHTMX(Pessoa pessoa) {

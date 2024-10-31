@@ -124,6 +124,13 @@
             <artifactId>commons-validator</artifactId>
             <version>1.9.0</version>
         </dependency>
+
+        <!-- Adiciona a dependência da biblioteca htmx-spring-boot -->
+        <dependency>
+            <groupId>io.github.wimdeblauwe</groupId>
+            <artifactId>htmx-spring-boot</artifactId>
+            <version>3.5.1</version>
+        </dependency>
     </dependencies>
 
     <build>
