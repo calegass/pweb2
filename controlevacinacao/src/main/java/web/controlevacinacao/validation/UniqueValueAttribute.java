@@ -1,15 +1,11 @@
 package web.controlevacinacao.validation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 import web.controlevacinacao.validation.service.UniqueValue;
 import web.controlevacinacao.validation.validator.UniqueValueAttributeValidator;
+
+import java.lang.annotation.*;
 
 //How to use:
 //
@@ -62,7 +58,7 @@ import web.controlevacinacao.validation.validator.UniqueValueAttributeValidator;
 //public class Contato {
 //    private String email;
 
-@Target({ ElementType.TYPE, ElementType.ANNOTATION_TYPE })
+@Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = UniqueValueAttributeValidator.class)
 @Documented
@@ -70,20 +66,20 @@ public @interface UniqueValueAttribute {
 
     String attribute();
 
-	String message() default "";
+    String message() default "";
 
-	Class<?>[] groups() default {};
+    Class<?>[] groups() default {};
 
-	Class<? extends Payload>[] payload() default {};
-	
-	Class<? extends UniqueValue> service();
-	
+    Class<? extends Payload>[] payload() default {};
+
+    Class<? extends UniqueValue> service();
+
     String serviceQualifier() default "";
-	
-	@Target({ ElementType.TYPE, ElementType.ANNOTATION_TYPE })
-	@Retention(RetentionPolicy.RUNTIME)
-	@Documented
-	@interface List {
-		UniqueValueAttribute[] value();
-	}
+
+    @Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
+    @Retention(RetentionPolicy.RUNTIME)
+    @Documented
+    @interface List {
+        UniqueValueAttribute[] value();
+    }
 }

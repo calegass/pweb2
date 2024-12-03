@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:layout="http://www.thymeleaf.org"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport"/>
+    <title>Confirmação de Remoção de Vacina</title>
+</head>
+<body>
+<!-- conteudo principal -->
+<main class="flex flex-col w-full" id="main" layout:fragment="conteudo" th:fragment="confirmacao">
+    <h1 class="text-3xl mt-10 ml-10">Você tem certeza que quer remover a pessoa?</h1>
+    <h2 class="text-xl mt-10 ml-10" th:text="'Código: ' + ${pessoa.codigo}"></h2>
+    <h2 class="text-xl mt-4 ml-10" th:text="'Nome: ' + ${pessoa.nome}"></h2>
+    <h2 class="text-xl mt-4 ml-10" th:text="'CPF: ' + ${pessoa.cpf}"></h2>
+    <h2 class="text-xl mt-4 ml-10" th:text="'Data de nascimento: ' + ${pessoa.dataNascimento}"></h2>
+    <h2 class="text-xl mt-4 ml-10" th:text="'Profissão: ' + ${pessoa.profissao}"></h2>
+    <div class="flex mt-10 ml-10">
+        <form hx-swap="outerHTML" hx-target="#main" th:hx-get="@{/templates/carros/pesquisar}">
+            <button class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none"
+                    type="submit">
+                Voltar
+            </button>
+        </form>
+        <form class="ml-10" hx-swap="outerHTML" hx-target="#main" th:hx-post="@{/templates/carros/remover}">
+            <input name="codigo" th:value="${pessoa.codigo}" type="hidden"/>
+            <input name="nome" th:value="${pessoa.nome}" type="hidden"/>
+            <input name="cpf" th:value="${pessoa.cpf}" type="hidden"/>
+            <input name="dataNascimento" th:value="${pessoa.dataNascimento}" type="hidden"/>
+            <input name="profissao" th:value="${pessoa.profissao}" type="hidden"/>
+            <button class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-100 text-red-800 hover:bg-red-200 focus:outline-none focus:bg-red-200 disabled:opacity-50 disabled:pointer-events-none"
+                    type="submit">
+                Remover
+            </button>
+        </form>
+    </div>
+</main>
+<!-- !conteudo principal -->
+</body>
+</html>

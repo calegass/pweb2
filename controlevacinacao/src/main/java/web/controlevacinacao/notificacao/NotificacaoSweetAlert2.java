@@ -2,57 +2,57 @@ package web.controlevacinacao.notificacao;
 
 public class NotificacaoSweetAlert2 {
 
-	private String mensagem;
-	private TipoNotificaoSweetAlert2 tipo;
-	private int intervalo = 3000;
+    private String mensagem;
+    private TipoNotificaoSweetAlert2 tipo;
+    private int intervalo = 3000;
 
-	public NotificacaoSweetAlert2(String mensagem) {
-		this.mensagem = mensagem;
-		tipo = TipoNotificaoSweetAlert2.INFO;
-	}
+    public NotificacaoSweetAlert2(String mensagem) {
+        this.mensagem = mensagem;
+        tipo = TipoNotificaoSweetAlert2.INFO;
+    }
 
-	public NotificacaoSweetAlert2(String mensagem, TipoNotificaoSweetAlert2 tipo) {
-		this.mensagem = mensagem;
-		this.tipo = tipo;
-	}
-	
-	public NotificacaoSweetAlert2(String mensagem, TipoNotificaoSweetAlert2 tipo, int intervalo) {
-		this.mensagem = mensagem;
-		this.tipo = tipo;
-		this.intervalo = intervalo;
-	}
+    public NotificacaoSweetAlert2(String mensagem, TipoNotificaoSweetAlert2 tipo) {
+        this.mensagem = mensagem;
+        this.tipo = tipo;
+    }
 
-	public String getMensagem() {
-		return mensagem;
-	}
+    public NotificacaoSweetAlert2(String mensagem, TipoNotificaoSweetAlert2 tipo, int intervalo) {
+        this.mensagem = mensagem;
+        this.tipo = tipo;
+        this.intervalo = intervalo;
+    }
 
-	public void setMensagem(String mensagem) {
-		this.mensagem = mensagem;
-	}
+    public String getMensagem() {
+        return mensagem;
+    }
 
-	public String getTipo() {
-		return tipo.getTipo();
-	}
+    public void setMensagem(String mensagem) {
+        this.mensagem = mensagem;
+    }
 
-	public void setTipo(TipoNotificaoSweetAlert2 tipo) {
-		this.tipo = tipo;
-	}
-	
-	public void setTipo(String tipo) {
-		this.tipo = TipoNotificaoSweetAlert2.valueOf(tipo);
-	}
+    public String getTipo() {
+        return tipo.getTipo();
+    }
 
-	public int getIntervalo() {
-		return intervalo;
-	}
+    public void setTipo(TipoNotificaoSweetAlert2 tipo) {
+        this.tipo = tipo;
+    }
 
-	public void setIntervalo(int intervalo) {
-		this.intervalo = intervalo;
-	}
+    public void setTipo(String tipo) {
+        this.tipo = TipoNotificaoSweetAlert2.valueOf(tipo);
+    }
 
-	@Override
-	public String toString() {
-		return "mensagem: " + mensagem + "\ntipo: " + tipo.getTipo() + "\nintervalo: " + intervalo;
-	}
+    public int getIntervalo() {
+        return intervalo;
+    }
+
+    public void setIntervalo(int intervalo) {
+        this.intervalo = intervalo;
+    }
+
+    @Override
+    public String toString() {
+        return "mensagem: " + mensagem + "\ntipo: " + tipo.getTipo() + "\nintervalo: " + intervalo;
+    }
 
 }

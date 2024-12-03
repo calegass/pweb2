@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:layout="http://www.thymeleaf.org" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport"/>
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Controle de Vacinação</title>
+    <link rel="shortcut icon" th:href="@{/images/logo.png}"/>
+    <!-- Estilo Principal do Template -->
+    <link href="../../../../../../controlecarros/src/main/resources/static/css/style.css" rel="stylesheet"
+          th:href="@{/css/style.css}" type="text/css"/>
+    <!-- Estilo do MDDateTimePicker -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en"
+          rel="stylesheet"/>
+    <link href="../../../../../../controlecarros/src/main/resources/static/css/vendors/mddatetimepicker/mdDateTimePicker.min.css"
+          rel="stylesheet"
+          th:href="@{/css/vendors/mddatetimepicker/mdDateTimePicker.min.css}"
+          type="text/css"/>
+    <!-- Estilo do MCDatepicker -->
+    <link href="../../../../../../controlecarros/src/main/resources/static/css/vendors/mcdatepicker/mc-calendar.min.css"
+          rel="stylesheet"
+          th:href="@{/css/vendors/mcdatepicker/mc-calendar.min.css}"
+          type="text/css"/>
+    <!-- Estilo do SweetAlert2 -->
+    <link href="../../../../../../controlecarros/src/main/resources/static/css/vendors/sweetalert2/sweetalert2.min.css"
+          rel="stylesheet"
+          th:href="@{/css/vendors/sweetalert2/sweetalert2.min.css}"
+          type="text/css"/>
+
+    <!-- Biblioteca Alpine.js usada no Menu -->
+    <script defer src="../../../../../../controlecarros/src/main/resources/static/js/vendors/alpinejs/cdn.min.js"
+            th:src="@{/js/vendors/alpinejs/cdn.min.js}"></script>
+    <!-- Biblioteca htmx -->
+    <script defer src="../../../../../../controlecarros/src/main/resources/static/js/vendors/htmx/htmx.min.js"
+            th:src="@{/js/vendors/htmx/htmx.min.js}"></script>
+    <!-- Script para controle do Menu -->
+    <script defer
+            src="../../../../../../controlecarros/src/main/resources/static/js/scriptmenus.js"
+            th:src="@{/js/scriptmenus.js}"></script>
+    <!-- Biblioteca SimpleMaskMoney -->
+    <script defer
+            src="../../../../../../controlecarros/src/main/resources/static/js/vendors/maskmoney/simple-mask-money.umd.min.js"
+            th:src="@{/js/vendors/maskmoney/simple-mask-money.umd.min.js}"></script>
+    <!-- Biblioteca MCDatepicker -->
+    <script defer
+            src="../../../../../../controlecarros/src/main/resources/static/js/vendors/mcdatepicker/mc-calendar.min.js"
+            th:src="@{/js/vendors/mcdatepicker/mc-calendar.min.js}"></script>
+    <!-- Biblioteca MDDateTimePicker -->
+    <script defer
+            src="../../../../../../controlecarros/src/main/resources/static/js/vendors/mddatetimepicker/draggabilly.pkgd.min.js"
+            th:src="@{/js/vendors/mddatetimepicker/draggabilly.pkgd.min.js}"></script>
+    <script defer
+            src="../../../../../../controlecarros/src/main/resources/static/js/vendors/mddatetimepicker/moment.min.js"
+            th:src="@{/js/vendors/mddatetimepicker/moment.min.js}"></script>
+    <script defer
+            src="../../../../../../controlecarros/src/main/resources/static/js/vendors/mddatetimepicker/mdDateTimePicker.js"
+            th:src="@{/js/vendors/mddatetimepicker/mdDateTimePicker.js}"></script>
+    <!-- Biblioteca SweetAlert2 -->
+    <script defer
+            src="../../../../../../controlecarros/src/main/resources/static/js/vendors/sweetalert2/sweetalert2.all.min.js.js"
+            th:src="@{/js/vendors/sweetalert2/sweetalert2.all.min.js}"></script>
+    <!-- Script para o codigo ninja do Godoi -->
+    <script defer
+            src="../../../../../../controlecarros/src/main/resources/static/js/codigoninjadogodoi.js"
+            th:src="@{/js/codigoninjadogodoi.js}"></script>
+</head>
+<body>
+<!-- Container da página -->
+<div class="container flex h-screen min-w-full flex-col">
+    <!-- Navbar da pagina TOPO -->
+    <div th:replace="~{layout/fragments/header :: header}"></div>
+
+    <!-- Meio -->
+    <section class="flex flex-1">
+        <!-- Menu lateral ESQUERDA -->
+        <div th:replace="~{layout/fragments/sidebar :: sidebar}"></div>
+
+        <!-- Conteudo Principal da pagina -->
+        <th:block layout:fragment="conteudo"></th:block>
+    </section>
+
+    <!-- Rodape da pagina BAIXO -->
+    <div th:replace="~{layout/fragments/rodape :: rodape}"></div>
+</div>
+
+<!-- Bloco para JavaScript adicional que a página pode precisar -->
+<th:block layout:fragment="scripts"></th:block>
+</body>
+</html>

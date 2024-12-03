@@ -42,11 +42,11 @@ public class PessoaController {
         this.pessoaRepository = pessoaRepository;
         this.pessoaService = pessoaService;
     }
-
-    @GetMapping("/nova")
-    public String abrirCadastroPessoa(Pessoa pessoa) {
-        return "pessoas/nova";
-    }
+//
+//    @GetMapping("/nova")
+//    public String abrirCadastroPessoa(Pessoa pessoa) {
+//        return "pessoas/nova";
+//    }
 
     @HxRequest
     @GetMapping("/nova")
@@ -54,17 +54,17 @@ public class PessoaController {
         return "pessoas/nova :: formulario";
     }
 
-    @PostMapping("/nova")
-    public String cadastrarPessoa(Pessoa pessoa) {
-        pessoaService.salvar(pessoa);
-        return "redirect:/pessoas/sucesso";
-    }
-
-    @GetMapping("/sucesso")
-    public String abrirMensagemSucesso(Model model) {
-        model.addAttribute("mensagem", "Pessoa cadastrada com sucesso");
-        return "mensagem";
-    }
+//    @PostMapping("/nova")
+//    public String cadastrarPessoa(Pessoa pessoa) {
+//        pessoaService.salvar(pessoa);
+//        return "redirect:/pessoas/sucesso";
+//    }
+//
+//    @GetMapping("/sucesso")
+//    public String abrirMensagemSucesso(Model model) {
+//        model.addAttribute("mensagem", "Pessoa cadastrada com sucesso");
+//        return "mensagem";
+//    }
 
     @HxRequest
     @PostMapping("/nova")
@@ -95,10 +95,10 @@ public class PessoaController {
         return "pessoas/nova :: formulario";
     }
 
-    @GetMapping("/abrirpesquisar")
-    public String abrirPaginaPesquisa() {
-        return "pessoas/pesquisar";
-    }
+//    @GetMapping("/abrirpesquisar")
+//    public String abrirPaginaPesquisa() {
+//        return "pessoas/pesquisar";
+//    }
 
     @HxRequest
     @GetMapping("/abrirpesquisar")
@@ -106,16 +106,16 @@ public class PessoaController {
         return "pessoas/pesquisar :: formulario";
     }
 
-    @GetMapping("/pesquisar")
-    public String pesquisar(PessoaFilter filtro, Model model,
-                            @PageableDefault(size = 7) @SortDefault(sort = "codigo", direction = Sort.Direction.ASC) Pageable pageable,
-                            HttpServletRequest request) {
-        Page<Pessoa> pagina = pessoaRepository.pesquisar(filtro, pageable);
-        logger.info("Pessoas pesquisadas: {}", pagina);
-        PageWrapper<Pessoa> paginaWrapper = new PageWrapper<>(pagina, request);
-        model.addAttribute("pagina", paginaWrapper);
-        return "pessoas/pessoas";
-    }
+//    @GetMapping("/pesquisar")
+//    public String pesquisar(PessoaFilter filtro, Model model,
+//                            @PageableDefault(size = 7) @SortDefault(sort = "codigo", direction = Sort.Direction.ASC) Pageable pageable,
+//                            HttpServletRequest request) {
+//        Page<Pessoa> pagina = pessoaRepository.pesquisar(filtro, pageable);
+//        logger.info("Pessoas pesquisadas: {}", pagina);
+//        PageWrapper<Pessoa> paginaWrapper = new PageWrapper<>(pagina, request);
+//        model.addAttribute("pagina", paginaWrapper);
+//        return "pessoas/pessoas";
+//    }
 
     @HxRequest
     @GetMapping("/pesquisar")
@@ -129,10 +129,10 @@ public class PessoaController {
         return "pessoas/pessoas :: tabela";
     }
 
-    @PostMapping("/abriralterar")
-    public String abrirAlterar(Pessoa pessoa) {
-        return "pessoas/alterar";
-    }
+//    @PostMapping("/abriralterar")
+//    public String abrirAlterar(Pessoa pessoa) {
+//        return "pessoas/alterar";
+//    }
 
     @HxRequest
     @PostMapping("/abriralterar")
@@ -140,17 +140,17 @@ public class PessoaController {
         return "pessoas/alterar :: formulario";
     }
 
-    @PostMapping("/alterar")
-    public String alterar(Pessoa pessoa) {
-        pessoaService.alterar(pessoa);
-        return "redirect:/pessoas/sucesso2";
-    }
-
-    @GetMapping("/sucesso2")
-    public String abrirMensagemSucesso2(Model model) {
-        model.addAttribute("mensagem", "Pessoa alterada com sucesso");
-        return "mensagem";
-    }
+//    @PostMapping("/alterar")
+//    public String alterar(Pessoa pessoa) {
+//        pessoaService.alterar(pessoa);
+//        return "redirect:/pessoas/sucesso2";
+//    }
+//
+//    @GetMapping("/sucesso2")
+//    public String abrirMensagemSucesso2(Model model) {
+//        model.addAttribute("mensagem", "Pessoa alterada com sucesso");
+//        return "mensagem";
+//    }
 
     @HxRequest
     @PostMapping("/alterar")

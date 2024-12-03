@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "postcss ./src/main/resources/static/css/input.css -o ./src/main/resources/static/css/style.css",
-    "watch": "postcss ./src/main/resources/static/css/input.css --verbose -o ./src/main/resources/static/css/style.css --watch"
+    "build": "postcss ../controlecarros/src/main/resources/static/css/input.css -o ./src/main/resources/static/css/style.css",
+    "watch": "postcss ../controlecarros/src/main/resources/static/css/input.css --verbose -o ./src/main/resources/static/css/style.css --watch"
   },
   "author": "matheus calegari",
   "license": "ISC",

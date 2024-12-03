@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:layout="http://www.thymeleaf.org"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport"/>
+    <title>Pesquisa de Pessoas</title>
+</head>
+<body>
+<!-- conteudo principal -->
+<main class="flex flex-col w-full" id="main" layout:fragment="conteudo" th:fragment="formulario">
+    <div class="m-10">
+        <h1 class="text-3xl mt-10 ml-10">Pesquisa de Vacina</h1>
+        <!-- Formulario -->
+        <form class="w-1/2 mt-10 ml-10" hx-swap="outerHTML" hx-target="#main" th:hx-get="@{/carros/pesquisar}">
+            <label class="block text-gray-700 font-medium mb-2" for="codigo">Código</label>
+            <input class="w-full py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none"
+                   id="codigo" name="codigo"
+                   type="text"/>
+            <label class="block text-gray-700 font-medium mb-2 mt-5" for="marca">Marca</label>
+            <input class="w-full py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none"
+                   id="marca" name="marca"
+                   type="text"/>
+            <label class="block text-gray-700 font-medium mb-2 mt-5" for="modelo">Modelo</label>
+            <input class="w-full py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none"
+                   id="modelo" name="modelo"
+                   type="text"/>
+            <div class="flex justify-between">
+                <div class="w-1/2">
+                    <label class="block text-gray-700 font-medium mb-2 mt-5" for="cor">Cor</label>
+                    <input class="w-full py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none"
+                           id="cor" name="cor"
+                           type="text"/>
+                </div>
+                <div class="w-1/2">
+                    <label class="block text-gray-700 font-medium mb-2 mt-5" for="placa">Placa</label>
+                    <input class="w-full py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none"
+                           id="placa" name="placa"
+                           type="text"/>
+                </div>
+            </div>
+            <div class="flex justify-between">
+                <div class="w-1/2">
+                    <label class="block text-gray-700 font-medium mb-2 mt-5" for="anoDe">Ano a partir
+                        de</label>
+                    <input class="w-full py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none"
+                           id="anoDe" name="anoDe"
+                           type="text"/>
+                </div>
+                <div class="w-1/2">
+                    <label class="block text-gray-700 font-medium mb-2 mt-5" for="anoAte">Ano até</label>
+                    <input class="w-full py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none"
+                           id="anoAte" name="anoAte"
+                           type="text"/>
+                </div>
+            </div>
+            <br/>
+            <button class="py-3 px-4 inline-flex items-center mt-5 gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none"
+                    type="submit">
+                Pesquisar
+            </button>
+        </form>
+        <div th:if="${notificacao != null}" th:object="${notificacao}">
+            <input id="mensagem" th:value="*{mensagem}" type="hidden">
+            <input id="tipo" th:value="*{tipo}" type="hidden">
+            <input id="intervalo" th:value="*{intervalo}" type="hidden">
+        </div>
+    </div>
+</main>
+<!-- !conteudo principal -->
+</body>
+</html>
