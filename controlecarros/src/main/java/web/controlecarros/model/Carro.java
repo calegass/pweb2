@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -25,9 +26,10 @@ public class Carro implements Serializable {
 	@NotBlank(message = "A placa do carro é obrigatória")
 	private String placa;
 	@Enumerated(EnumType.STRING)
-	private Status ocupado = Status.INATIVO;
-	@Enumerated(EnumType.STRING)
-	private Status status = Status.ATIVO;
+	private Status status = Status.DISPONIVEL;
+
+	@Column(name = "enabled")
+	private boolean isActive;
 
 	public Long getCodigo() {
 		return codigo;
@@ -77,14 +79,6 @@ public class Carro implements Serializable {
 		this.placa = placa;
 	}
 
-	public Status getOcupado() {
-		return ocupado;
-	}
-
-	public void setOcupado(Status ocupado) {
-		this.ocupado = ocupado;
-	}
-
 	public Status getStatus() {
 		return status;
 	}
@@ -93,11 +87,22 @@ public class Carro implements Serializable {
 		this.status = status;
 	}
 
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void disable() {
+		isActive = false;
+	}
+
 	@Override
 	public boolean equals(Object o) {
-		if (o == null || getClass() != o.getClass()) return false;
+		if (o == null || getClass() != o.getClass())
+			return false;
 		Carro carro = (Carro) o;
-		return Objects.equals(codigo, carro.codigo) && Objects.equals(marca, carro.marca) && Objects.equals(modelo, carro.modelo) && Objects.equals(cor, carro.cor) && Objects.equals(ano, carro.ano) && Objects.equals(placa, carro.placa) && status == carro.status;
+		return Objects.equals(codigo, carro.codigo) && Objects.equals(marca, carro.marca)
+				&& Objects.equals(modelo, carro.modelo) && Objects.equals(cor, carro.cor)
+				&& Objects.equals(ano, carro.ano) && Objects.equals(placa, carro.placa) && status == carro.status;
 	}
 
 	@Override

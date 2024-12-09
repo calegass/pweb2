@@ -2,8 +2,8 @@ package web.controlecarros.model;
 
 public enum Status {
 
-    ATIVO("ativo"),
-    INATIVO("inativo");
+    DISPONIVEL("disponível"),
+    ALUGADO("alugado");
 
     private String descricao;
 
