@@ -25,6 +25,9 @@ public class Carro implements Serializable {
 	private Integer ano;
 	@NotBlank(message = "A placa do carro é obrigatória")
 	private String placa;
+	private Double kilometragem;
+	@Column(name = "kmrodados")
+	private Double kmRodados;
 	@Enumerated(EnumType.STRING)
 	private Status status = Status.DISPONIVEL;
 
@@ -75,6 +78,18 @@ public class Carro implements Serializable {
 		return placa;
 	}
 
+	public void setKilometragem(Double kilometragem) {
+		this.kilometragem = kilometragem;
+	}
+
+	public Double getKilometragem() {
+		return kilometragem;
+	}
+
+	public Double getKmRodados() {
+		return kmRodados;
+	}
+
 	public void setPlaca(String placa) {
 		this.placa = placa;
 	}
@@ -93,6 +108,10 @@ public class Carro implements Serializable {
 
 	public void disable() {
 		isActive = false;
+	}
+
+	public void calcularKmRodados(Double kilometragemAtual) {
+		this.kmRodados = kilometragemAtual - this.kilometragem;
 	}
 
 	@Override

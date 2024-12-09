@@ -1,7 +1,6 @@
 package web.controlecarros.service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,8 +35,8 @@ public class AluguelService {
     }
 
     @Transactional
-    public Aluguel returnCar(Long rentalId) {
-        Aluguel rental = aluguelRepository.findById(rentalId)
+    public Aluguel devolverCarro(Carro carro, Double kilometragemAtual) {
+        Aluguel rental = aluguelRepository.findByCarroAndDataFinalIsNull(carro)
                 .orElseThrow(() -> new IllegalArgumentException("Aluguel não encontrado"));
 
         if (rental.getFimAluguel() != null) {
@@ -48,6 +47,8 @@ public class AluguelService {
         aluguelRepository.save(rental);
 
         Carro car = rental.getCarro();
+
+        car.calcularKmRodados(kilometragemAtual);
         car.setStatus(Status.DISPONIVEL);
         carroRepository.save(car);
 
@@ -56,6 +57,11 @@ public class AluguelService {
 
     public boolean isCarroAlugado(Carro carro) {
         return aluguelRepository.findByCarroAndDataFinalIsNull(carro).isPresent();
+    }
+
+    public Aluguel getAluguelByCarro(Carro carro) {
+        return aluguelRepository.findByCarroAndDataFinalIsNull(carro)
+                .orElseThrow(() -> new IllegalArgumentException("Aluguel não encontrado"));
     }
 
     // public List<Aluguel> getAlugueisAtivos() {

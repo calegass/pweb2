@@ -13,10 +13,43 @@
         <h1 class="text-3xl">Alugar</h1>
         <form hx-swap="outerHTML" hx-target="#main" th:hx-post="@{/alugueis/alugar}">
             <input type="hidden" name="carroId" th:value="*{carro.codigo}" />
-            <label class="block text-gray-700 font-medium mb-2 mt-10" for="carroId">Código</label>
-            <input class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none"
-                   disabled th:value="*{carro.codigo}" type="text" name="carroIdDisplay"/>
-            <label class="block text-gray-700 font-medium mb-2" for="nomeFuncionario">Nome Funcionário</label>
+            
+            <label class="block text-gray-700 font-medium mb-2 mt-10" for="modelo">Modelo</label>
+            <div class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg">
+                <span th:text="*{carro.modelo}"></span>
+            </div>
+            
+            <label class="block text-gray-700 font-medium mb-2 mt-10" for="cor">Cor</label>
+            <div class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg">
+                <span th:text="*{carro.cor}"></span>
+            </div>
+            
+            <label class="block text-gray-700 font-medium mb-2 mt-10" for="ano">Ano</label>
+            <div class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg">
+                <span th:text="*{carro.ano}"></span>
+            </div>
+            
+            <label class="block text-gray-700 font-medium mb-2 mt-10" for="placa">Placa</label>
+            <div class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg">
+                <span th:text="*{carro.placa}"></span>
+            </div>
+
+            <label class="block text-gray-700 font-medium mb-2 mt-10" for="ano">Kilometragem</label>
+            <div class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg">
+                <span th:text="*{carro.kilometragem}"></span>
+            </div>
+
+            <label class="block text-gray-700 font-medium mb-2 mt-10" for="ano">KMs rodados</label>
+            <div class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg">
+                <span th:text="*{carro.kmRodados}"></span>
+            </div>
+            
+            <label class="block text-gray-700 font-medium mb-2 mt-10" for="status">Status</label>
+            <div class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg">
+                <span th:text="*{carro.status}"></span>
+            </div>
+
+            <label class="block text-gray-700 font-medium mb-2 mt-10" for="nomeFuncionario">Nome Funcionário</label>
             <input class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg" 
                    name="nomeFuncionario" type="text" required />
             <br/>
@@ -25,8 +58,6 @@
                 Alugar
             </button>
         </form>
-        
-        
     </div>
 </main>
 <!-- !conteudo principal -->

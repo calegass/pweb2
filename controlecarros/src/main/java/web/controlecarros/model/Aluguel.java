@@ -1,6 +1,7 @@
 package web.controlecarros.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -64,5 +65,9 @@ public class Aluguel {
 
     public void setNomeFuncionario(String nomeFuncionario) {
         this.nomeFuncionario = nomeFuncionario;
+    }
+
+    public String getDataInicialPtBr() {
+        return dataInicial.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
     }
 }

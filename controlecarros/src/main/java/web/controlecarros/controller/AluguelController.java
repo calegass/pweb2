@@ -71,6 +71,16 @@ public class AluguelController {
         return "controle_acesso/alugar :: formulario";
     }
 
+    @HxRequest()
+    @GetMapping("/devolver/{carroId}")
+    public String abrirPaginaDevolver(@PathVariable Long carroId, Model model, HtmxResponse.Builder htmxResponse) {
+        Carro carro = carroService.getCarroById(carroId);
+        Aluguel aluguel = aluguelService.getAluguelByCarro(carro);
+        model.addAttribute("carro", carro);
+        model.addAttribute("aluguel", aluguel);
+        return "controle_acesso/devolver :: formulario";
+    }
+
     @HxRequest
     @PostMapping("/alugar")
     public String alugarCarro(@RequestParam Long carroId, @RequestParam String nomeFuncionario, Model model,
@@ -78,12 +88,19 @@ public class AluguelController {
 
         Carro carro = carroService.getCarroById(carroId);
 
-        if (nomeFuncionario == null || nomeFuncionario.isBlank()) {
-            model.addAttribute("notificacao", new NotificacaoSweetAlert2("Nome do funcionário é obrigatório",
-                    TipoNotificaoSweetAlert2.ERROR, 4000));
-            return "controle_acesso/alugar :: formulario";
-        }
         aluguelService.alugarCarro(carro, nomeFuncionario);
+
+        return "redirect:/alugueis";
+    }
+
+    @HxRequest
+    @PostMapping("/devolver")
+    public String devolverCarro(@RequestParam Long carroId, @RequestParam Double kilometragemAtual, Model model,
+            HtmxResponse.Builder htmxResponse) {
+
+        Carro carro = carroService.getCarroById(carroId);
+
+        aluguelService.devolverCarro(carro, kilometragemAtual);
 
         return "redirect:/alugueis";
     }
