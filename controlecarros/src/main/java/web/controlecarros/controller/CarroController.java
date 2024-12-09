@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import web.controlecarros.filter.CarroFilter;
 import web.controlecarros.model.Carro;
-import web.controlecarros.model.Status;
 import web.controlecarros.notificacao.NotificacaoSweetAlert2;
 import web.controlecarros.notificacao.TipoNotificaoSweetAlert2;
 import web.controlecarros.pagination.PageWrapper;
@@ -84,10 +83,10 @@ public class CarroController {
 	@HxRequest
 	@GetMapping("/pesquisar")
 	public String pesquisar(CarroFilter filtro, Model model,
-	                        @PageableDefault(size = 7) @SortDefault(sort = "codigo", direction = Sort.Direction.ASC) Pageable pageable,
-	                        HttpServletRequest request) {
+			@PageableDefault(size = 7) @SortDefault(sort = "codigo", direction = Sort.Direction.ASC) Pageable pageable,
+			HttpServletRequest request) {
 		Page<Carro> pagina = carroRepository.pesquisar(filtro, pageable);
-		logger.info("Pessoas pesquisadas: {}", pagina);
+		logger.info("Carros pesquisados: {}", pagina);
 		PageWrapper<Carro> paginaWrapper = new PageWrapper<>(pagina, request);
 		model.addAttribute("pagina", paginaWrapper);
 		return "carros/carros :: tabela";
@@ -132,7 +131,7 @@ public class CarroController {
 	@HxLocation(path = "/carros/sucesso3", target = "#main", swap = "outerHTML")
 	@PostMapping("/remover")
 	public String remover(Carro carro) {
-		carro.setStatus(Status.INATIVO);
+		carro.disable();
 		carroService.alterar(carro);
 		return "mensagem";
 	}
