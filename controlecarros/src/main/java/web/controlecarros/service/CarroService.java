@@ -1,12 +1,12 @@
 package web.controlecarros.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import web.controlecarros.model.Carro;
 import web.controlecarros.model.Status;
 import web.controlecarros.repository.CarroRepository;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -31,10 +31,10 @@ public class CarroService {
 	}
 
 	public List<Carro> getCarrosDisponiveis() {
-		return carroRepository.findByStatus(Status.DISPONIVEL);
+		return carroRepository.findByStatusAndIsActive(Status.DISPONIVEL, true);
 	}
 
 	public List<Carro> getCarrosAlugados() {
-		return carroRepository.findByStatus(Status.ALUGADO);
+		return carroRepository.findByStatusAndIsActive(Status.ALUGADO, true);
 	}
 }

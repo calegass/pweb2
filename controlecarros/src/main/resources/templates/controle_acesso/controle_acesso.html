@@ -8,6 +8,8 @@
 </head>
 <body>
 <main class="w-full" id="main" layout:fragment="conteudo" th:fragment="tabelas">
+    <div th:replace="~{layout/fragments/header :: usuariologinlogout}"></div>
+    <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
     <div class="flex m-10 space-x-5">
         <!-- Carros Disponíveis -->
         <div class="w-1/2">
@@ -22,16 +24,21 @@
                                 <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase" scope="col">Modelo</th>
                                 <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase" scope="col">Placa</th>
                                 <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase" scope="col">Km</th>
-                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase" scope="col">Ações</th>
+                                <th sec:authorize="hasRole('ROLE_ADMIN')" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase" scope="col">Ações</th>
                             </tr>
                             </thead>
                             <tbody>
+                            <tr th:if="${carrosDisponiveis.empty}">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 text-center" colspan="5">
+                                    Nenhum carro cadastrado.
+                                </td>
+                            </tr>
                             <tr class="odd:bg-white even:bg-gray-100 hover:bg-gray-200" th:each="carro : ${carrosDisponiveis}">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800" th:text="${carro.marca}"></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800" th:text="${carro.modelo}"></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800" th:text="${carro.placa}"></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800" th:text="${carro.kilometragem}"></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                <td sec:authorize="hasRole('ROLE_ADMIN')" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                                     <a th:hx-get="@{alugueis/alugar/{carroId}(carroId=${carro.codigo})}"
                                        class="cursor-pointer py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200">
                                         Alugar
@@ -58,16 +65,21 @@
                                 <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase" scope="col">Modelo</th>
                                 <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase" scope="col">Placa</th>
                                 <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase" scope="col">Km</th>
-                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase" scope="col">Ações</th>
+                                <th sec:authorize="hasRole('ROLE_ADMIN')" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase" scope="col">Ações</th>
                             </tr>
                             </thead>
                             <tbody>
+                            <tr th:if="${carrosAlugados.empty}">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 text-center" colspan="5">
+                                    Nenhum carro alugado.
+                                </td>
+                            </tr>
                             <tr class="odd:bg-white even:bg-gray-100 hover:bg-gray-200" th:each="carro : ${carrosAlugados}">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800" th:text="${carro.marca}"></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800" th:text="${carro.modelo}"></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800" th:text="${carro.placa}"></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800" th:text="${carro.kilometragem}"></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                <td sec:authorize="hasRole('ROLE_ADMIN')" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                                     <a th:hx-get="@{alugueis/devolver/{carroId}(carroId=${carro.codigo})}"
                                        class="cursor-pointer py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-green-100 text-green-800 hover:bg-green-200 focus:outline-none focus:bg-green-200">
                                         Devolver

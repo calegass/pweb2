@@ -30,6 +30,7 @@ CREATE TABLE public.rental (
     nome_funcionario text NOT NULL,
     data_inicial    timestamp NOT NULL,
     data_final      timestamp,
+    kmRodados   float DEFAULT 0,
     PRIMARY KEY (id),
     FOREIGN KEY (carro_id) REFERENCES public.carro (codigo)
 );

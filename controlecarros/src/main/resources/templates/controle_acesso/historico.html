@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:layout="http://www.thymeleaf.org"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport"/>
+    <title>Histórico de Aluguéis</title>
+</head>
+<body>
+<main class="w-full" id="main" layout:fragment="conteudo" th:fragment="tabela">
+    <div th:replace="~{layout/fragments/header :: usuariologinlogout}"></div>
+    <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
+    <div class="m-10">
+        <h2 class="text-2xl mb-4">Histórico</h2>
+        <div class="-m-1.5 overflow-x-auto mt-5">
+            <div class="p-1.5 min-w-full inline-block align-middle">
+                <div class="border rounded-xl overflow-hidden shadow">
+                    <table class="min-w-full divide-y divide-gray-200" hx-target="#main">
+                        <thead>
+                            <tr>
+                                <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase" scope="col">Marca</th>
+                                <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase" scope="col">Modelo</th>
+                                <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase" scope="col">Placa</th>
+                                <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase" scope="col">Km rodados</th>
+                                <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase" scope="col">Data de início</th>
+                                <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase" scope="col">Data de término</th>
+                                <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase" scope="col">Funcionário</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:if="${alugueis.empty}">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 text-center" colspan="7">
+                                    Nenhum histórico de aluguel encontrado.
+                                </td>
+                            </tr>
+                            <tr class="odd:bg-white even:bg-gray-100 hover:bg-gray-200" th:each="aluguel : ${alugueis}">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800" th:text="${aluguel.carro.marca}"></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800" th:text="${aluguel.carro.modelo}"></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800" th:text="${aluguel.carro.placa}"></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800" th:text="${aluguel.kmRodados}"></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800" th:text="${aluguel.dataInicial}"></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800" th:text="${aluguel.dataFinal}"></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800" th:text="${aluguel.nomeFuncionario}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</main>
+</body>
+</html>

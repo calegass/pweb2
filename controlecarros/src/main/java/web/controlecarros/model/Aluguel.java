@@ -34,6 +34,9 @@ public class Aluguel {
     @Column(name = "data_final")
     private LocalDateTime dataFinal;
 
+    @Column(name = "kmrodados")
+    private Double kmRodados;
+
     public Aluguel() {
     }
 
@@ -69,5 +72,21 @@ public class Aluguel {
 
     public String getDataInicialPtBr() {
         return dataInicial.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+    }
+
+    public String getDataInicial() {
+        return dataInicial.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+    }
+
+    public String getDataFinal() {
+        return dataFinal.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+    }
+
+    public Double getKmRodados() {
+        return kmRodados;
+    }
+
+    public void setKmRodados(Double kmRodados) {
+        this.kmRodados = kmRodados;
     }
 }

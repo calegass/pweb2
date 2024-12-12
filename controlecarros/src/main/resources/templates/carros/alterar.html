@@ -9,6 +9,8 @@
 <body>
 <!-- conteudo principal -->
 <main class="w-full" id="main" layout:fragment="conteudo" th:fragment="formulario">
+    <div th:replace="~{layout/fragments/header :: usuariologinlogout}"></div>
+    <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
     <div class="mt-10 ml-10">
         <h1 class="text-3xl">Alteração de Carro</h1>
         <!-- Formulario -->

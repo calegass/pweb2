@@ -1,11 +1,18 @@
 package web.controlecarros.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Objects;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "carro")
@@ -110,8 +117,9 @@ public class Carro implements Serializable {
 		isActive = false;
 	}
 
-	public void calcularKmRodados(Double kilometragemAtual) {
+	public Double calcularKmRodados(Double kilometragemAtual) {
 		this.kmRodados = kilometragemAtual - this.kilometragem;
+		return this.kmRodados;
 	}
 
 	@Override

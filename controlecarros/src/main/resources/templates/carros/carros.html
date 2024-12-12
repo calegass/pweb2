@@ -9,6 +9,8 @@
 <body>
 <!-- conteudo principal -->
 <main class="flex flex-col w-full" id="main" layout:fragment="conteudo" th:fragment="tabela">
+    <div th:replace="~{layout/fragments/header :: usuariologinlogout}"></div>
+    <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
     <div class="flex justify-between items-center mt-10 ml-10 md:w-4/5">
         <h1 class="text-3xl">Carros Consultados</h1>
         <div class="flex gap-x-2">
@@ -49,7 +51,7 @@
                             <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase" scope="col">
                                 Em atividade?
                             </th>
-                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase" colspan="2"
+                            <th sec:authorize="hasRole('ROLE_ADMIN')" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase" colspan="2"
                                 scope="col">Ações
                             </th>
                         </tr>
@@ -77,7 +79,7 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800" th:text="${carro.status}">
                                 New York No. 1 Lake Park
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                            <td sec:authorize="hasRole('ROLE_ADMIN')" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                                 <form hx-swap="outerHTML" hx-target="#main"
                                       th:hx-post="@{/carros/abriralterar}">
                                     <input name="codigo" th:value="${carro.codigo}" type="hidden"/>
@@ -92,8 +94,9 @@
                                     </button>
                                 </form>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                <form hx-swap="outerHTML" hx-target="#main" th:hx-confirm="${'Você vai remover o carro de placa ' + carro.placa + '!'}"
+                            <td sec:authorize="hasRole('ROLE_ADMIN')" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                <form hx-swap="outerHTML" hx-target="#main"
+                                      th:hx-confirm="${'Você vai remover o carro ' + carro.modelo + '!'}"
                                       th:hx-post="@{/carros/remover}">
                                     <input name="codigo" th:value="${carro.codigo}" type="hidden"/>
                                     <input name="marca" th:value="${carro.marca}" type="hidden"/>

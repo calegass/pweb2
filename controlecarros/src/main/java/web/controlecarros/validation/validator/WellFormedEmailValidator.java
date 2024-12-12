@@ -1,10 +1,11 @@
 package web.controlecarros.validation.validator;
 
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import web.controlecarros.validation.WellFormedEmail;
 
 /*
@@ -27,8 +28,8 @@ import web.controlecarros.validation.WellFormedEmail;
 
 public class WellFormedEmailValidator implements ConstraintValidator<WellFormedEmail, String> {
 
-    private static final Logger logger = LoggerFactory.getLogger(WellFormedEmailValidator.class);
-
+	private static final Logger logger = LoggerFactory.getLogger(WellFormedEmailValidator.class);
+	
 //	Usando javax.mail
 //	@Override
 //	public boolean isValid(String value, ConstraintValidatorContext context) {
@@ -45,21 +46,21 @@ public class WellFormedEmailValidator implements ConstraintValidator<WellFormedE
 //			return false;
 //		}
 //	}
+	
+		
+	//Usando commons.validator
+	private static final EmailValidator validator = EmailValidator.getInstance();
+	//private static final EmailValidator validator = EmailValidator.getInstance(true);
+	//private static final EmailValidator validator = EmailValidator.getInstance(true, true);
 
-
-    //Usando commons.validator
-    private static final EmailValidator validator = EmailValidator.getInstance();
-    //private static final EmailValidator validator = EmailValidator.getInstance(true);
-    //private static final EmailValidator validator = EmailValidator.getInstance(true, true);
-
-    @Override
-    public boolean isValid(String email, ConstraintValidatorContext context) {
-        if (email != null && !email.isBlank()) {
-            boolean result = validator.isValid(email);
-            logger.debug("O e-mail {} foi considerado {}", email, result ? "válido" : "inválido");
-            return result;
-        }
-        return true;
-    }
+	@Override
+	public boolean isValid(String email, ConstraintValidatorContext context) {
+		if (email != null && !email.isBlank()) {
+			boolean result = validator.isValid(email);
+			logger.debug("O e-mail {} foi considerado {}", email, result ? "válido" : "inválido");
+			return result;
+		}
+		return true;
+	}
 
 }
