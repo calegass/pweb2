@@ -4,13 +4,15 @@
 <head>
     <meta charset="UTF-8"/>
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport"/>
-    <title>Pesquisa de Pessoas</title>
+    <title>Pesquisa de Carros</title>
 </head>
 <body>
 <!-- conteudo principal -->
 <main class="flex flex-col w-full" id="main" layout:fragment="conteudo" th:fragment="formulario">
+    <div th:replace="~{layout/fragments/header :: usuariologinlogout}"></div>
+    <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
     <div class="m-10">
-        <h1 class="text-3xl mt-10 ml-10">Pesquisa de Vacina</h1>
+        <h1 class="text-3xl mt-10 ml-10">Pesquisa de Carros</h1>
         <!-- Formulario -->
         <form class="w-1/2 mt-10 ml-10" hx-swap="outerHTML" hx-target="#main" th:hx-get="@{/carros/pesquisar}">
             <label class="block text-gray-700 font-medium mb-2" for="codigo">Código</label>

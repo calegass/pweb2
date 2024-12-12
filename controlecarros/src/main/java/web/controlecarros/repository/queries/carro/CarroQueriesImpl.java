@@ -65,7 +65,7 @@ public class CarroQueriesImpl implements CarroQueries {
 			predicateList.add(builder.lessThanOrEqualTo(c.get("ano"),
 					filtro.getAnoAte()));
 		}
-		predicateList.add(builder.equal(c.<Status>get("status"), Status.ATIVO));
+		predicateList.add(builder.equal(c.<Boolean>get("isActive"), true));
 
 		predArray = new Predicate[predicateList.size()];
 		predicateList.toArray(predArray);
@@ -106,7 +106,8 @@ public class CarroQueriesImpl implements CarroQueries {
 			predicateListTotal.add(builder.lessThanOrEqualTo(cTotal.get("ano"),
 					filtro.getAnoAte()));
 		}
-		predicateListTotal.add(builder.equal(cTotal.<Status>get("status"), Status.ATIVO));
+		predicateListTotal.add(builder.equal(cTotal.<Status>get("status"), Status.DISPONIVEL));
+		predicateListTotal.add(builder.equal(cTotal.<Boolean>get("isActive"), true));
 
 		predArrayTotal = new Predicate[predicateListTotal.size()];
 		predicateListTotal.toArray(predArrayTotal);

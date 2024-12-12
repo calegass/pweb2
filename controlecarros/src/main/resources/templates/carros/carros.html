@@ -9,9 +9,23 @@
 <body>
 <!-- conteudo principal -->
 <main class="flex flex-col w-full" id="main" layout:fragment="conteudo" th:fragment="tabela">
-    <h1 class="text-3xl mt-10 ml-10">Carros Pesquisados</h1>
+    <div th:replace="~{layout/fragments/header :: usuariologinlogout}"></div>
+    <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
+    <div class="flex justify-between items-center mt-10 ml-10 md:w-4/5">
+        <h1 class="text-3xl">Carros Consultados</h1>
+        <div class="flex gap-x-2">
+            <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200"
+               hx-push-url="true" hx-swap="outerHTML" hx-target="#main" th:hx-get="@{/carros/abrirpesquisar}">
+                Pesquisar
+            </a>
+            <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-100 text-red-800 hover:bg-red-200 focus:outline-none focus:bg-red-200"
+               hx-push-url="true" hx-swap="outerHTML" hx-target="#main" th:hx-get="@{/carros/pesquisar}">
+                Remover Filtros
+            </a>
+        </div>
+    </div>
 
-    <h1 class="mt-10 ml-10 text-2xl" th:if="${pagina.vazia}">Não foram encontrados carros nessa pesquisa</h1>
+    <h1 class="mt-10 ml-10 text-2xl" th:if="${pagina.vazia}">Não foram encontrados carros nessa consulta</h1>
 
     <div class="flex flex-col ml-10 md:w-4/5" th:if="${not pagina.vazia}">
         <div class="-m-1.5 overflow-x-auto mt-5">
@@ -37,7 +51,7 @@
                             <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase" scope="col">
                                 Em atividade?
                             </th>
-                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase" colspan="2"
+                            <th sec:authorize="hasRole('ROLE_ADMIN')" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase" colspan="2"
                                 scope="col">Ações
                             </th>
                         </tr>
@@ -62,10 +76,10 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800" th:text="${carro.placa}">
                                 New York No. 1 Lake Park
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800" th:text="${carro.ocupado}">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800" th:text="${carro.status}">
                                 New York No. 1 Lake Park
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                            <td sec:authorize="hasRole('ROLE_ADMIN')" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                                 <form hx-swap="outerHTML" hx-target="#main"
                                       th:hx-post="@{/carros/abriralterar}">
                                     <input name="codigo" th:value="${carro.codigo}" type="hidden"/>
@@ -80,8 +94,9 @@
                                     </button>
                                 </form>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                <form hx-swap="outerHTML" hx-target="#main" th:hx-confirm="${'Você vai remover o carro de placa ' + carro.placa + '!'}"
+                            <td sec:authorize="hasRole('ROLE_ADMIN')" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                <form hx-swap="outerHTML" hx-target="#main"
+                                      th:hx-confirm="${'Você vai remover o carro ' + carro.modelo + '!'}"
                                       th:hx-post="@{/carros/remover}">
                                     <input name="codigo" th:value="${carro.codigo}" type="hidden"/>
                                     <input name="marca" th:value="${carro.marca}" type="hidden"/>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:layout="http://www.thymeleaf.org"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport"/>
+    <title>Controle de Acesso de Carros</title>
+</head>
+<body>
+<main class="w-full" id="main" layout:fragment="conteudo" th:fragment="tabelas">
+    <div th:replace="~{layout/fragments/header :: usuariologinlogout}"></div>
+    <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
+    <div class="flex m-10 space-x-5">
+        <!-- Carros Disponíveis -->
+        <div class="w-1/2">
+            <h2 class="text-2xl mb-4">Carros Disponíveis</h2>
+            <div class="-m-1.5 overflow-x-auto mt-5">
+                <div class="p-1.5 min-w-full inline-block align-middle">
+                    <div class="border rounded-xl overflow-hidden shadow">
+                        <table class="min-w-full divide-y divide-gray-200" hx-target="#main">
+                            <thead>
+                            <tr>
+                                <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase" scope="col">Marca</th>
+                                <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase" scope="col">Modelo</th>
+                                <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase" scope="col">Placa</th>
+                                <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase" scope="col">Km</th>
+                                <th sec:authorize="hasRole('ROLE_ADMIN')" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase" scope="col">Ações</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:if="${carrosDisponiveis.empty}">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 text-center" colspan="5">
+                                    Nenhum carro cadastrado.
+                                </td>
+                            </tr>
+                            <tr class="odd:bg-white even:bg-gray-100 hover:bg-gray-200" th:each="carro : ${carrosDisponiveis}">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800" th:text="${carro.marca}"></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800" th:text="${carro.modelo}"></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800" th:text="${carro.placa}"></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800" th:text="${carro.kilometragem}"></td>
+                                <td sec:authorize="hasRole('ROLE_ADMIN')" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                    <a th:hx-get="@{alugueis/alugar/{carroId}(carroId=${carro.codigo})}"
+                                       class="cursor-pointer py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200">
+                                        Alugar
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Carros Alugados -->
+        <div class="w-1/2">
+            <h2 class="text-2xl mb-4">Carros Alugados</h2>
+            <div class="-m-1.5 overflow-x-auto mt-5">
+                <div class="p-1.5 min-w-full inline-block align-middle">
+                    <div class="border rounded-xl overflow-hidden shadow">
+                        <table class="min-w-full divide-y divide-gray-200" hx-target="#main">
+                            <thead>
+                            <tr>
+                                <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase" scope="col">Marca</th>
+                                <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase" scope="col">Modelo</th>
+                                <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase" scope="col">Placa</th>
+                                <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase" scope="col">Km</th>
+                                <th sec:authorize="hasRole('ROLE_ADMIN')" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase" scope="col">Ações</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:if="${carrosAlugados.empty}">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 text-center" colspan="5">
+                                    Nenhum carro alugado.
+                                </td>
+                            </tr>
+                            <tr class="odd:bg-white even:bg-gray-100 hover:bg-gray-200" th:each="carro : ${carrosAlugados}">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800" th:text="${carro.marca}"></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800" th:text="${carro.modelo}"></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800" th:text="${carro.placa}"></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800" th:text="${carro.kilometragem}"></td>
+                                <td sec:authorize="hasRole('ROLE_ADMIN')" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                    <a th:hx-get="@{alugueis/devolver/{carroId}(carroId=${carro.codigo})}"
+                                       class="cursor-pointer py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-green-100 text-green-800 hover:bg-green-200 focus:outline-none focus:bg-green-200">
+                                        Devolver
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

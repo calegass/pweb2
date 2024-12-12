@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:layout="http://www.thymeleaf.org"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport"/>
+    <title>Devolver Carro</title>
+</head>
+<body>
+<!-- conteudo principal -->
+<main class="w-full" id="main" layout:fragment="conteudo" th:fragment="formulario">
+    <div th:replace="~{layout/fragments/header :: usuariologinlogout}"></div>
+    <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
+    <div class="mt-10 ml-10">
+        <h1 class="text-3xl">Devolução</h1>
+        <form hx-swap="outerHTML" hx-target="#main" th:hx-post="@{/alugueis/devolver}">
+            <input type="hidden" name="carroId" th:value="*{carro.codigo}" />
+            <div class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg">
+                <label class="block text-gray-700 font-medium mb-2" for="modelo">Modelo</label>
+                <span th:text="*{carro.modelo}"></span>
+            </div>
+            
+            <div class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg">
+                <label class="block text-gray-700 font-medium mb-2" for="cor">Cor</label>
+                <span th:text="*{carro.cor}"></span>
+            </div>
+            
+            <div class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg">
+                <label class="block text-gray-700 font-medium mb-2" for="ano">Ano</label>
+                <span th:text="*{carro.ano}"></span>
+            </div>
+            
+            <div class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg">
+                <label class="block text-gray-700 font-medium mb-2" for="placa">Placa</label>
+                <span th:text="*{carro.placa}"></span>
+            </div>
+            
+            <div class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg">
+                <label class="block text-gray-700 font-medium mb-2" for="status">Status</label>
+                <span th:text="*{carro.status}"></span>
+            </div>
+            
+            <div class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg">
+                <label class="block text-gray-700 font-medium mb-2" for="nomeFuncionario">Nome Funcionário</label>
+                <span th:text="*{aluguel.nomeFuncionario}"></span>
+            </div>
+
+            <div class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg">
+                <label class="block text-gray-700 font-medium mb-2" for="dataInicial">Dia da saída</label>
+                <span th:text="*{aluguel.getDataInicialPtBr()}"></span>
+            </div>
+
+            <label class="block text-gray-700 font-medium mb-2 mt-10" for="ano">Kilometragem anterior</label>
+            <div class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg">
+                <span th:text="*{carro.kilometragem}"></span>
+            </div>
+            
+            <div class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg">
+                <label class="block text-gray-700 font-medium mb-2" for="kilometragemAtual">Kilometragem Atual</label>
+                <input class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg" 
+                    name="kilometragemAtual" type="number" required 
+                    th:value="*{carro.kilometragem}" th:min="*{carro.kilometragem}" />
+            </div>
+
+         
+            <br/>
+            <button class="py-3 px-4 inline-flex items-center mt-5 gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200"
+                    type="submit">
+                Devolver
+            </button>
+        </form>
+    </div>
+</main>
+<!-- !conteudo principal -->
+</body>
+</html>

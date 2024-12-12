@@ -1,31 +1,107 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
-    <title>Controle de Vacinação</title>
-  </head>
-  <body>
-    <div th:fragment="inputtext (texto, atributo)">
-      <label for="nome" th:text="${texto}" class="block text-gray-700 font-medium mb-2 mt-10">Nome</label>
-      <div class="relative w-full md:w-1/2">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <title>Controle de Aluguéis</title>
+</head>
+<body>
+<div th:fragment="inputtext (texto, atributo)">
+    <label class="block text-gray-700 font-medium mb-2 mt-6" for="nome" th:text="${texto}">Nome</label>
+    <div class="relative w-full md:w-1/2">
         <input
-          type="text"
-          th:field="*{__${atributo}__}"
-          class="block w-full px-4 py-3 text-gray-500 disabled:opacity-50 disabled:pointer-events-none"
-          th:classappend="${#fields.hasErrors('__${atributo}__') ? ' border-red-300 rounded-lg focus:border-red-500 focus:ring-red-500' : ' border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500'}"
+                class="block w-full px-4 py-3 text-gray-500 disabled:opacity-50 disabled:pointer-events-none"
+                th:classappend="${#fields.hasErrors('__${atributo}__') ? ' border-red-300 rounded-lg focus:border-red-500 focus:ring-red-500' : ' border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500'}"
+                th:field="*{__${atributo}__}"
+                type="text"
         />
-        <div th:if="${#fields.hasErrors('__${atributo}__')}" class="end-0 absolute items-center inset-y-0 flex pointer-events-none pe-3 justify-center">
-          <svg class="shrink-0 size-4 text-red-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" x2="12" y1="8" y2="12"></line>
-            <line x1="12" x2="12.01" y1="16" y2="16"></line>
-          </svg>
+        <div class="end-0 absolute items-center inset-y-0 flex pointer-events-none pe-3 justify-center"
+             th:if="${#fields.hasErrors('__${atributo}__')}">
+            <svg class="shrink-0 size-4 text-red-500" fill="none" height="24" stroke="currentColor"
+                 stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"
+                 xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" x2="12" y1="8" y2="12"></line>
+                <line x1="12" x2="12.01" y1="16" y2="16"></line>
+            </svg>
         </div>
-      </div>
-      <p th:if="${#fields.hasErrors('__${atributo}__')}" th:each="erro : ${#fields.errors('__${atributo}__')}" th:text="${erro} + '. '" class="text-sm text-red-600 mt-2"></p>
     </div>
+    <p class="text-sm text-red-600 mt-2" th:each="erro : ${#fields.errors('__${atributo}__')}"
+       th:if="${#fields.hasErrors('__${atributo}__')}" th:text="${erro} + '. '"></p>
+</div>
 
-  </body>
+<div th:fragment="inputdata (texto, atributo)">
+    <label class="block text-gray-700 font-medium mb-2 mt-6" for="nome" th:text="${texto}">Nome</label>
+    <div class="relative w-full md:w-1/2">
+        <input
+                class="componentedata block w-full px-4 py-3 text-gray-500 disabled:opacity-50 disabled:pointer-events-none"
+                readonly
+                th:classappend="${#fields.hasErrors('__${atributo}__') ? ' border-red-300 rounded-lg focus:border-red-500 focus:ring-red-500' : ' border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500'}"
+                th:field="*{__${atributo}__}"
+                type="text"
+        />
+        <div class="end-0 absolute items-center inset-y-0 flex pointer-events-none pe-3 justify-center"
+             th:if="${#fields.hasErrors('__${atributo}__')}">
+            <svg class="shrink-0 size-4 text-red-500" fill="none" height="24" stroke="currentColor"
+                 stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"
+                 xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" x2="12" y1="8" y2="12"></line>
+                <line x1="12" x2="12.01" y1="16" y2="16"></line>
+            </svg>
+        </div>
+    </div>
+    <p class="text-sm text-red-600 mt-2" th:each="erro : ${#fields.errors('__${atributo}__')}"
+       th:if="${#fields.hasErrors('__${atributo}__')}" th:text="${erro} + '. '"></p>
+</div>
+
+<div th:fragment="inputpassword (texto, atributo)">
+    <label class="block text-gray-700 font-medium mb-2 mt-6" for="nome" th:text="${texto}">Nome</label>
+    <div class="relative w-full md:w-1/2">
+        <input
+                class="block w-full px-4 py-3 text-gray-500 disabled:opacity-50 disabled:pointer-events-none"
+                th:classappend="${#fields.hasErrors('__${atributo}__') ? ' border-red-300 rounded-lg focus:border-red-500 focus:ring-red-500' : ' border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500'}"
+                th:field="*{__${atributo}__}"
+                type="password"
+        />
+        <div class="end-0 absolute items-center inset-y-0 flex pointer-events-none pe-3 justify-center"
+             th:if="${#fields.hasErrors('__${atributo}__')}">
+            <svg class="shrink-0 size-4 text-red-500" fill="none" height="24" stroke="currentColor"
+                 stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"
+                 xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" x2="12" y1="8" y2="12"></line>
+                <line x1="12" x2="12.01" y1="16" y2="16"></line>
+            </svg>
+        </div>
+    </div>
+    <p class="text-sm text-red-600 mt-2" th:each="erro : ${#fields.errors('__${atributo}__')}"
+       th:if="${#fields.hasErrors('__${atributo}__')}" th:text="${erro} + '. '"></p>
+</div>
+
+<div th:fragment="inputemail (texto, atributo)">
+    <label class="block text-gray-700 font-medium mb-2 mt-6" for="nome" th:text="${texto}">Nome</label>
+    <div class="relative w-full md:w-1/2">
+        <input
+                class="block w-full px-4 py-3 text-gray-500 disabled:opacity-50 disabled:pointer-events-none"
+                th:classappend="${#fields.hasErrors('__${atributo}__') ? ' border-red-300 rounded-lg focus:border-red-500 focus:ring-red-500' : ' border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500'}"
+                th:field="*{__${atributo}__}"
+                type="email"
+        />
+        <div class="end-0 absolute items-center inset-y-0 flex pointer-events-none pe-3 justify-center"
+             th:if="${#fields.hasErrors('__${atributo}__')}">
+            <svg class="shrink-0 size-4 text-red-500" fill="none" height="24" stroke="currentColor"
+                 stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"
+                 xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" x2="12" y1="8" y2="12"></line>
+                <line x1="12" x2="12.01" y1="16" y2="16"></line>
+            </svg>
+        </div>
+    </div>
+    <p class="text-sm text-red-600 mt-2" th:each="erro : ${#fields.errors('__${atributo}__')}"
+       th:if="${#fields.hasErrors('__${atributo}__')}" th:text="${erro} + '. '"></p>
+</div>
+</body>
 </html>
